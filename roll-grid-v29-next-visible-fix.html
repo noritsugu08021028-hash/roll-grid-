@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>ROLL GRID 4 v23</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#03101f;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh;padding:16px;overflow-x:hidden}
+.wrap{max-width:980px;margin:auto}
+h1{margin:4px 0 2px;font-size:28px}.sub{color:#9db2ca;font-size:13px}
+.top{display:flex;gap:8px;margin:12px 0;flex-wrap:wrap}.stat{background:#10243b;border:1px solid #294763;border-radius:12px;padding:8px 12px;min-width:88px}.stat b{display:block;font-size:20px}
+.panel{background:#091b2e;border:1px solid #294763;border-radius:18px;padding:14px;margin-bottom:12px}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;width:100%;max-width:520px;margin:auto}
+.cell{aspect-ratio:1/1;border:2px solid #315370;border-radius:13px;background:#071626;display:flex;align-items:center;justify-content:center;min-width:0}
+.cell.target{border-color:#ffd447;box-shadow:0 0 18px #ffd447}
+.die{width:78%;height:78%;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:clamp(24px,8vw,44px);font-weight:900;box-shadow:inset 0 3px 8px #ffffff55,0 5px 12px #0008;touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.red{background:#ef4a4a}.blue{background:#3d80ff}.yellow{background:#f4c63f;color:#18243a}.green{background:#39bd73}.wild{background:conic-gradient(#ef4a4a,#f4c63f,#39bd73,#3d80ff,#ef4a4a)}
+.nextbox{display:flex;align-items:center;gap:14px}.nextslot{width:92px;height:92px;display:flex;align-items:center;justify-content:center}.nextslot .die{width:78px;height:78px;font-size:36px}
+.dragGhost{position:fixed;z-index:999999;pointer-events:none;margin:0;width:78px!important;height:78px!important;font-size:36px!important}
+.flash{box-shadow:0 0 0 4px #ffd447,0 0 30px #ffd447;transform:scale(1.035)}
+.flash .die{filter:brightness(1.7) drop-shadow(0 0 12px #fff);transform:scale(1.08)}
+.clearing{opacity:0;transform:scale(.25);transition:.24s}
+button{border:0;border-radius:10px;padding:10px 14px;font-weight:800}
+.log{font-size:12px;max-height:120px;overflow:auto;color:#c8d5e3;line-height:1.6}
+.overlay{position:fixed;inset:0;background:#020812e8;display:none;align-items:center;justify-content:center;z-index:1000000;padding:20px}.overlay.show{display:flex}.result{background:#0d2038;border:1px solid #365978;border-radius:22px;padding:24px;width:min(420px,100%);text-align:center}.resultScore{font-size:50px;font-weight:900;color:#ffd447}.scores{text-align:left;background:#071626;border-radius:12px;padding:10px 18px}
+@media(min-width:760px){.game{display:grid;grid-template-columns:minmax(420px,560px) 1fr;gap:14px;align-items:start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>ROLL GRID 4 <small style="font-size:.32em;opacity:.45">v24</small></h1><div class="sub">4×4 Dice Puzzle</div>
+<div class="top">
+ <div class="stat">SCORE<b id="score">0</b></div><div class="stat">BEST<b id="best">0</b></div>
+ <div class="stat">PLACED<b id="turn">0</b></div><div class="stat">COMBO<b id="combo">×1.0</b></div>
+</div>
+<div class="game">
+ <div class="panel"><div id="board" class="board"></div></div>
+ <div>
+  <div class="panel"><b>NEXT DICE</b><div class="nextbox"><div id="next" class="nextslot"></div><div><div id="nextText"></div><div class="sub">指で掴んで盤面へ</div></div></div></div>
+  <div class="panel"><button id="reset">RESET</button><div id="log" class="log"></div></div>
+ </div>
+</div>
+</div>
+<div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const COLORS=["red","blue","yellow","green"];
+let colorBag=[];
+function refillColorBag(){
+ colorBag=[];
+ for(const c of COLORS) for(let i=0;i<4;i++) colorBag.push(c);
+ for(let i=colorBag.length-1;i>0;i--){
+  const j=Math.floor(Math.random()*(i+1));
+  [colorBag[i],colorBag[j]]=[colorBag[j],colorBag[i]];
+ }
+}
+function nextColor(){
+ if(!colorBag.length) refillColorBag();
+ return colorBag.pop();
+}
+let board=new Array(16).fill(null),nextDie=null,score=0,best=0,turn=0,combo=0,busy=false;
+
+function get(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
+function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+best=Number(get("rg4best","0"));
+
+function roll(){if(Math.random()<.01)return{wild:true,n:"★",c:"wild"};return{wild:false,n:1+Math.floor(Math.random()*4),c:nextColor()}}
+function dieEl(d){const x=document.createElement("div");x.className="die "+d.c;x.textContent=d.n;return x}
+function patterns(){
+ let p=[];
+ for(let r=0;r<4;r++)p.push(["横 "+(r+1),[r*4,r*4+1,r*4+2,r*4+3]]);
+ for(let c=0;c<4;c++)p.push(["縦 "+(c+1),[c,c+4,c+8,c+12]]);
+ p.push(["斜め ↘",[0,5,10,15]],["斜め ↙",[3,6,9,12]]);
+ for(let r=0;r<3;r++)for(let c=0;c<3;c++){let i=r*4+c;p.push(["2×2",[i,i+1,i+4,i+5]])}
+ p.push(["四隅",[0,3,12,15]]);return p
+}
+function classify(ds){
+ if(ds.some(x=>!x))return[];
+ const normal=ds.filter(x=>!x.wild);
+ const colors=normal.map(x=>x.c);
+ const nums=normal.map(x=>x.n);
+ const uc=new Set(colors), un=new Set(nums);
+
+ const sameColor=uc.size<=1;
+ const fourColors=uc.size===normal.length;
+ const sameNumber=un.size<=1;
+ const straight=un.size===normal.length && nums.every(n=>n>=1&&n<=4);
+
+ if(sameColor&&sameNumber)return [["同じ色で同じ数字",100]];
+ if(sameColor&&straight)return [["同じ色で連番",80]];
+ if(fourColors&&sameNumber)return [["4色揃って同じ数字",50]];
+ if(fourColors&&straight)return [["4色揃って連番",30]];
+ return [];
+}
+function evaluate(){let z=[];for(const [name,idx] of patterns()){let hands=classify(idx.map(i=>board[i]));if(hands.length)z.push({name,idx,hands})}return z}
+function mult(){return combo<=1?1:1+combo/10}
+function render(){
+ const b=$("board");b.innerHTML="";
+ board.forEach((d,i)=>{const c=document.createElement("div");c.className="cell";c.dataset.i=i;if(d)c.appendChild(dieEl(d));b.appendChild(c)});
+ $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();$("turn").textContent=turn;$("combo").textContent="×"+mult().toFixed(1);
+ const n=$("next");n.innerHTML="";
+ if(nextDie){
+  const d=dieEl(nextDie);
+  d.style.visibility="visible";
+  n.appendChild(d);
+  $("nextText").textContent=nextDie.wild?"WILD":nextDie.c.toUpperCase()+" "+nextDie.n;
+  installDrag(d);
+ }else{
+  $("nextText").textContent="";
+ }
+}
+function log(s){$("log").insertAdjacentHTML("afterbegin","<div>"+s+"</div>")}
+
+function installDrag(source){
+ let ghost=null,active=false,w=0,h=0;
+ function point(x,y){
+  if(!ghost)return;
+  ghost.style.left=(x-w/2)+"px";ghost.style.top=(y-h/2)+"px";
+  document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
+  const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest(".cell"):null;
+  if(cell&&!board[Number(cell.dataset.i)])cell.classList.add("target");
+ }
+ function begin(x,y){
+  if(busy||active)return;active=true;
+  const r=source.getBoundingClientRect();w=r.width;h=r.height;
+  ghost=source.cloneNode(true);ghost.classList.add("dragGhost");ghost.style.width=w+"px";ghost.style.height=h+"px";document.body.appendChild(ghost);
+  source.style.visibility="hidden";point(x,y);
+ }
+ function finish(x,y){
+  if(!active)return;active=false;
+  if(ghost){ghost.remove();ghost=null}
+  document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
+  const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest(".cell"):null;
+  if(cell&&!board[Number(cell.dataset.i)]){
+   source.style.visibility="";
+   place(Number(cell.dataset.i));
+  }else{
+   source.style.visibility="";
+  }
+ }
+ // Touch Events: deliberately simple and document-level for iPhone Safari.
+ source.ontouchstart=function(e){if(e.touches.length!==1)return;e.preventDefault();let t=e.touches[0];begin(t.clientX,t.clientY)};
+ document.ontouchmove=function(e){if(!active)return;e.preventDefault();let t=e.touches[0];point(t.clientX,t.clientY)};
+ document.ontouchend=function(e){if(!active)return;e.preventDefault();let t=e.changedTouches[0];finish(t.clientX,t.clientY)};
+ document.ontouchcancel=function(){if(active){active=false;if(ghost)ghost.remove();source.style.visibility=""}};
+ // Mouse fallback.
+ source.onmousedown=function(e){e.preventDefault();begin(e.clientX,e.clientY);
+  document.onmousemove=m=>point(m.clientX,m.clientY);
+  document.onmouseup=m=>{document.onmousemove=null;document.onmouseup=null;finish(m.clientX,m.clientY)}
+ };
+}
+
+async function place(i){
+ if(busy||board[i]||!nextDie)return;
+ busy=true;
+ board[i]=nextDie;
+ nextDie=roll(); // 次の1個をここで一度だけ確定
+ turn++;
+ render();
+ const wins=evaluate();
+ if(wins.length){
+  combo++;const m=mult(),clear=new Set(),steps=[];
+  wins.forEach(w=>w.hands.forEach(h=>steps.push({name:w.name,idx:w.idx,hand:h[0],base:h[1]})));
+  for(const s of steps){
+   document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
+   s.idx.forEach(j=>$("board").children[j].classList.add("flash"));
+   await new Promise(r=>setTimeout(r,300));
+   const gain=Math.round(s.base*m);score+=gain;if(score>best){best=score;set("rg4best",best)}
+   $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();
+   log("+"+gain+" "+s.name+" / "+s.hand+" ×"+m.toFixed(1));s.idx.forEach(j=>clear.add(j));
+   document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
+   await new Promise(r=>setTimeout(r,150));
+  }
+  [...clear].forEach(j=>$("board").children[j].classList.add("clearing"));
+  await new Promise(r=>setTimeout(r,240));[...clear].forEach(j=>board[j]=null);
+ }else combo=0;
+ if(board.every(Boolean)){gameOver();return}
+ busy=false;render();
+}
+function gameOver(){
+ let scores=[];try{scores=JSON.parse(get("rg4scores","[]"))}catch(e){}
+ scores.push({score,date:new Date().toLocaleDateString("ja-JP")});scores.sort((a,b)=>b.score-a.score);scores=scores.slice(0,10);set("rg4scores",JSON.stringify(scores));
+ $("finalScore").textContent=score.toLocaleString();$("scoreList").innerHTML=scores.map(x=>"<li><b>"+x.score.toLocaleString()+"</b>　"+x.date+"</li>").join("");$("gameOver").classList.add("show")
+}
+function reset(){board=new Array(16).fill(null);score=0;turn=0;combo=0;busy=false;nextDie=roll();$("gameOver").classList.remove("show");$("log").innerHTML="";render()}
+$("reset").onclick=reset;$("again").onclick=reset;nextDie=roll();render();
+})();
+</script>
+</body></html>
