@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v81 — CLEAN APP UI</title>
+<title>ROLL GRID 4 v82 — CLEAN APP UI</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -69,7 +69,7 @@ body{background:
  #lock{width:52px;height:52px}.board{gap:4px}.boardFrame{padding:7px}
 }
 
-/* v81 — regular checkerboard border pattern */
+/* v82 — regular checkerboard border pattern */
 .board .cell{border-color:#21dcff!important}
 .board .cell:nth-child(2),
 .board .cell:nth-child(4),
@@ -84,7 +84,7 @@ body{background:
 }
 
 
-/* v81 — separate board and dice tray cleanly */
+/* v82 — separate board and dice tray cleanly */
 .app{
   grid-template-rows:48px 66px minmax(0,1fr) 112px 62px 54px!important;
   gap:7px!important;
@@ -122,7 +122,7 @@ body{background:
 }
 
 
-/* v81 — board geometry hard fix */
+/* v82 — board geometry hard fix */
 .boardFrame{
   box-sizing:border-box!important;
   width:min(92vw,49vh,560px)!important;
@@ -177,7 +177,7 @@ body{background:
 }
 
 
-/* v81 — fit board to its allocated row, never overlap YOUR DICE */
+/* v82 — fit board to its allocated row, never overlap YOUR DICE */
 .boardFrame{
   width:auto!important; height:100%!important; max-width:100%!important; max-height:100%!important;
   aspect-ratio:1 / 1!important; margin:auto!important; padding:9px!important; overflow:hidden!important;
@@ -192,7 +192,7 @@ body{background:
 @media(max-height:760px){.boardFrame{padding:7px!important}.board{gap:4px!important}}
 
 
-/* v81 — difficulty tuning */
+/* v82 — difficulty tuning */
 .deckHead{position:relative;height:24px;display:flex;align-items:center;justify-content:center}
 .deckHead .deckTitle{margin:0!important}
 #reroll{
@@ -207,7 +207,7 @@ body{background:
 @keyframes rerollPulse{to{transform:scale(1.06);filter:brightness(1.25);box-shadow:0 0 18px #ffd34a}}
 
 
-/* v81 — MY RANKING */
+/* v82 — MY RANKING */
 .rankingOverlay{position:fixed;inset:0;z-index:30000;background:rgba(0,3,12,.94);display:none;place-items:center;padding:18px}
 .rankingOverlay.show{display:grid}
 .rankingCard{width:min(420px,94vw);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);
@@ -226,7 +226,7 @@ body{background:
 .rankingBack{width:100%;margin-top:12px;padding:11px;border:0;border-radius:12px;background:#ffd044;color:#241400;font-weight:1000}
 
 
-/* v81 simple visual HOW TO PLAY */
+/* v82 simple visual HOW TO PLAY */
 .simpleIntro{text-align:center;color:#c9dcf2;font-size:11px;margin:10px 0}
 .handGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .handCard{background:#061326;border:1px solid #1a5479;border-radius:12px;padding:9px 6px;text-align:center}
@@ -246,7 +246,7 @@ body{background:
 .wildMini{display:inline-grid;place-items:center;width:29px;height:29px;border-radius:8px;background:linear-gradient(135deg,#ff4bf0,#6e5cff);color:white;font-size:18px;box-shadow:0 0 10px #d24cff}.bonusIcon{font-size:17px;font-weight:1000;color:#57eaff}.pinkTxt{color:#ff64c8}
 
 
-/* v81 accurate pattern diagrams */
+/* v82 accurate pattern diagrams */
 .miniBoard{width:100%!important;aspect-ratio:1!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;grid-template-rows:repeat(4,1fr)!important;gap:2px!important;background:#07111f!important;padding:4px!important;border:1px solid #34516d!important;border-radius:7px!important;box-shadow:none!important}
 .miniBoard:before{display:none!important}
 .miniBoard i{display:block!important;min-width:0;min-height:0;background:#0b1929;border:1px solid #29435d;border-radius:2px}
@@ -270,12 +270,12 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 .spark68{position:fixed;z-index:24999;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 9px #38eaff;pointer-events:none;animation:spark68 .6s ease-out forwards}
 @keyframes spark68{to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
 
-/* v81: iPhone tray hit targets; visually unchanged dice */
+/* v82: iPhone tray hit targets; visually unchanged dice */
 #tray .nextslot{min-height:74px;min-width:0;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
 #tray .nextslot .die{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 @media(max-height:760px){#tray .nextslot{min-height:64px}}
 
-/* v81: celebratory combo chain, iPhone-friendly nonblocking overlays */
+/* v82: celebratory combo chain, iPhone-friendly nonblocking overlays */
 #chainToast{position:fixed;left:50%;top:29%;transform:translate(-50%,-50%) scale(.6);z-index:11000;pointer-events:none;opacity:0;white-space:nowrap;text-align:center;font-weight:1000;font-size:clamp(28px,9vw,54px);color:#fff6aa;text-shadow:0 0 9px #fff,0 0 22px #ff35c8,0 0 35px #00dbff}
 #chainToast .chainSub{display:block;font-size:.30em;letter-spacing:.16em;color:#b6faff}
 #chainToast.go{animation:chainRise 1.0s cubic-bezier(.18,.8,.25,1) both}
@@ -322,7 +322,7 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v81</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v82</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
@@ -378,7 +378,7 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 <div id="feverFx"><div id="feverBurst"></div><div id="feverWord"></div><div id="feverMath"></div></div>
 <div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
 <script>
-// v81 clean game engine
+// v82 clean game engine
 let soundOn=true, audioCtx=null;
 function ac(){
   if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -456,7 +456,7 @@ function showComboCallout(level){
 document.getElementById("soundToggle").addEventListener("click",()=>{
   soundOn=!soundOn;
   document.getElementById("soundToggle").textContent=soundOn?"🔊":"🔇";
-  if(soundOn){ac();tone(660,.06,"sine",.025)}
+  if(soundOn){ac();tone(660,.06,"sine",.025)}else{try{window.speechSynthesis?.cancel()}catch(e){}}
 });
 document.addEventListener("pointerdown",()=>{if(soundOn)ac()},{once:true});
 
@@ -656,7 +656,7 @@ function installBoardDrag(source,fromIndex){
 }
 
 
-function v81Sparks(indices){
+function v82Sparks(indices){
  indices.forEach(idx=>{const cell=document.querySelectorAll("#board .cell")[idx];if(!cell)return;
  cell.classList.add("feverHit");setTimeout(()=>cell.classList.remove("feverHit"),520);
  const r=cell.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
@@ -664,9 +664,35 @@ function v81Sparks(indices){
  const a=Math.PI*2*k/5+Math.random()*.5,d=28+Math.random()*42;p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");
  document.body.appendChild(p);setTimeout(()=>p.remove(),650)}})
 }
-function v81Fever(steps,level,bonus,total,m){
+
+// v82: iPhone Safari speech announcer. Uses installed English voice when available.
+let rgAnnouncerVoice=null;
+function rgLoadAnnouncerVoice(){
+ try{
+  if(!('speechSynthesis' in window))return;
+  const voices=window.speechSynthesis.getVoices();
+  rgAnnouncerVoice=voices.find(v=>/^en-US/i.test(v.lang)&&/Samantha|Alex|Daniel|Aaron/i.test(v.name))
+    ||voices.find(v=>/^en/i.test(v.lang))||null;
+ }catch(e){}
+}
+rgLoadAnnouncerVoice();
+if('speechSynthesis' in window)window.speechSynthesis.addEventListener?.('voiceschanged',rgLoadAnnouncerVoice);
+function rgAnnounce(text){
+ try{
+  if(!soundOn||!('speechSynthesis' in window))return;
+  const synth=window.speechSynthesis;
+  synth.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';if(rgAnnouncerVoice)u.voice=rgAnnouncerVoice;
+  u.rate=.90;u.pitch=.82;u.volume=1;
+  synth.speak(u);
+ }catch(e){}
+}
+
+function v82Fever(steps,level,bonus,total,m){
  const burst=document.getElementById("feverBurst"),word=document.getElementById("feverWord"),math=document.getElementById("feverMath"),n=steps.length;
  word.textContent=n>=3?"JACKPOT!":n===2?"DOUBLE HIT!":level>=4?"AMAZING!":level===3?"EXCELLENT!":level===2?"GREAT!":"GOOD!";
+ rgAnnounce(n>=3?"Jackpot!":n===2?"Double hit!":level>=5?"Unbelievable!":level>=4?"Amazing!":level===3?"Excellent!":level===2?"Great!":"Good!");
  math.textContent=(n>1?n+" ROLES ×"+bonus.toFixed(1)+"  ·  ":"")+"COMBO ×"+m.toFixed(1)+"  ·  +"+total.toLocaleString();
  [burst,word,math].forEach(x=>{x.classList.remove("go");void x.offsetWidth;x.classList.add("go")});
 
@@ -693,7 +719,7 @@ async function lockAndScore(){
   const simultaneousBonus=steps.length>=3?2.0:steps.length===2?1.5:1.0;
   const feverTotal=Math.round(steps.reduce((a,x)=>a+x.base,0)*m*simultaneousBonus);
   RGImpact.begin(combo,steps.length);
-  v81Fever(steps,combo,simultaneousBonus,feverTotal,m);
+  v82Fever(steps,combo,simultaneousBonus,feverTotal,m);
   chainCelebration(combo,steps.length);
   let impactStep=0;
   for(const s of steps){
@@ -851,7 +877,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 </script>
 
 <script>
-/* v81 iPhone/Safari audio hardening */
+/* v82 iPhone/Safari audio hardening */
 (function(){
   let unlocked=false;
 
@@ -917,7 +943,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 
 
 <script>
-/* ROLL GRID v81 — single audio engine */
+/* ROLL GRID v82 — single audio engine */
 (function(){
   "use strict";
   const RGSound={
@@ -1006,7 +1032,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 })();
 </script>
 
-<style id="v81-touch-fix">
+<style id="v82-touch-fix">
 #tray .die{position:relative;touch-action:none;-webkit-user-select:none;user-select:none}
 #tray .die::after{content:"";position:absolute;inset:-12px;border-radius:18px;background:transparent}
 #tray{touch-action:none}
