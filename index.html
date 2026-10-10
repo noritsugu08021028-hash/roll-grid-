@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v83 — CLEAN APP UI</title>
+<title>ROLL GRID 4 v84 — CLEAN APP UI</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -69,7 +69,7 @@ body{background:
  #lock{width:52px;height:52px}.board{gap:4px}.boardFrame{padding:7px}
 }
 
-/* v83 — regular checkerboard border pattern */
+/* v84 — regular checkerboard border pattern */
 .board .cell{border-color:#21dcff!important}
 .board .cell:nth-child(2),
 .board .cell:nth-child(4),
@@ -84,7 +84,7 @@ body{background:
 }
 
 
-/* v83 — separate board and dice tray cleanly */
+/* v84 — separate board and dice tray cleanly */
 .app{
   grid-template-rows:48px 66px minmax(0,1fr) 112px 62px 54px!important;
   gap:7px!important;
@@ -122,7 +122,7 @@ body{background:
 }
 
 
-/* v83 — board geometry hard fix */
+/* v84 — board geometry hard fix */
 .boardFrame{
   box-sizing:border-box!important;
   width:min(92vw,49vh,560px)!important;
@@ -177,7 +177,7 @@ body{background:
 }
 
 
-/* v83 — fit board to its allocated row, never overlap YOUR DICE */
+/* v84 — fit board to its allocated row, never overlap YOUR DICE */
 .boardFrame{
   width:auto!important; height:100%!important; max-width:100%!important; max-height:100%!important;
   aspect-ratio:1 / 1!important; margin:auto!important; padding:9px!important; overflow:hidden!important;
@@ -192,7 +192,7 @@ body{background:
 @media(max-height:760px){.boardFrame{padding:7px!important}.board{gap:4px!important}}
 
 
-/* v83 — difficulty tuning */
+/* v84 — difficulty tuning */
 .deckHead{position:relative;height:24px;display:flex;align-items:center;justify-content:center}
 .deckHead .deckTitle{margin:0!important}
 #reroll{
@@ -207,7 +207,7 @@ body{background:
 @keyframes rerollPulse{to{transform:scale(1.06);filter:brightness(1.25);box-shadow:0 0 18px #ffd34a}}
 
 
-/* v83 — MY RANKING */
+/* v84 — MY RANKING */
 .rankingOverlay{position:fixed;inset:0;z-index:30000;background:rgba(0,3,12,.94);display:none;place-items:center;padding:18px}
 .rankingOverlay.show{display:grid}
 .rankingCard{width:min(420px,94vw);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);
@@ -226,7 +226,7 @@ body{background:
 .rankingBack{width:100%;margin-top:12px;padding:11px;border:0;border-radius:12px;background:#ffd044;color:#241400;font-weight:1000}
 
 
-/* v83 simple visual HOW TO PLAY */
+/* v84 simple visual HOW TO PLAY */
 .simpleIntro{text-align:center;color:#c9dcf2;font-size:11px;margin:10px 0}
 .handGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .handCard{background:#061326;border:1px solid #1a5479;border-radius:12px;padding:9px 6px;text-align:center}
@@ -246,7 +246,7 @@ body{background:
 .wildMini{display:inline-grid;place-items:center;width:29px;height:29px;border-radius:8px;background:linear-gradient(135deg,#ff4bf0,#6e5cff);color:white;font-size:18px;box-shadow:0 0 10px #d24cff}.bonusIcon{font-size:17px;font-weight:1000;color:#57eaff}.pinkTxt{color:#ff64c8}
 
 
-/* v83 accurate pattern diagrams */
+/* v84 accurate pattern diagrams */
 .miniBoard{width:100%!important;aspect-ratio:1!important;display:grid!important;grid-template-columns:repeat(4,1fr)!important;grid-template-rows:repeat(4,1fr)!important;gap:2px!important;background:#07111f!important;padding:4px!important;border:1px solid #34516d!important;border-radius:7px!important;box-shadow:none!important}
 .miniBoard:before{display:none!important}
 .miniBoard i{display:block!important;min-width:0;min-height:0;background:#0b1929;border:1px solid #29435d;border-radius:2px}
@@ -270,12 +270,12 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 .spark68{position:fixed;z-index:24999;width:7px;height:7px;border-radius:50%;background:#fff;box-shadow:0 0 9px #38eaff;pointer-events:none;animation:spark68 .6s ease-out forwards}
 @keyframes spark68{to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.1)}}
 
-/* v83: iPhone tray hit targets; visually unchanged dice */
+/* v84: iPhone tray hit targets; visually unchanged dice */
 #tray .nextslot{min-height:74px;min-width:0;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:grab}
 #tray .nextslot .die{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 @media(max-height:760px){#tray .nextslot{min-height:64px}}
 
-/* v83: celebratory combo chain, iPhone-friendly nonblocking overlays */
+/* v84: celebratory combo chain, iPhone-friendly nonblocking overlays */
 #chainToast{position:fixed;left:50%;top:29%;transform:translate(-50%,-50%) scale(.6);z-index:11000;pointer-events:none;opacity:0;white-space:nowrap;text-align:center;font-weight:1000;font-size:clamp(28px,9vw,54px);color:#fff6aa;text-shadow:0 0 9px #fff,0 0 22px #ff35c8,0 0 35px #00dbff}
 #chainToast .chainSub{display:block;font-size:.30em;letter-spacing:.16em;color:#b6faff}
 #chainToast.go{animation:chainRise 1.0s cubic-bezier(.18,.8,.25,1) both}
@@ -285,7 +285,7 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 #combo.chainPulse{animation:chainPulse .65s ease-out}
 @keyframes chainPulse{25%{transform:scale(1.35);color:#fff0a0;text-shadow:0 0 16px #ffd400}100%{transform:scale(1);text-shadow:none}}
 
-/* v83: full-size invisible touch target for each starting die */
+/* v84: full-size invisible touch target for each starting die */
 #tray .nextslot{position:relative!important;align-self:stretch!important;justify-self:stretch!important;width:100%!important;height:100%!important;min-height:0!important;touch-action:none!important;overflow:visible!important}
 #tray .nextslot .die{pointer-events:none!important}
 #tray .nextslot.used{pointer-events:none!important}
@@ -327,7 +327,7 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v83</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v84</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
@@ -383,7 +383,7 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 <div id="feverFx"><div id="feverBurst"></div><div id="feverWord"></div><div id="feverMath"></div></div>
 <div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
 <script>
-// v83 clean game engine
+// v84 clean game engine
 let soundOn=true, audioCtx=null;
 function ac(){
   if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
@@ -663,7 +663,7 @@ function installBoardDrag(source,fromIndex){
 }
 
 
-function v83Sparks(indices){
+function v84Sparks(indices){
  indices.forEach(idx=>{const cell=document.querySelectorAll("#board .cell")[idx];if(!cell)return;
  cell.classList.add("feverHit");setTimeout(()=>cell.classList.remove("feverHit"),520);
  const r=cell.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
@@ -672,13 +672,13 @@ function v83Sparks(indices){
  document.body.appendChild(p);setTimeout(()=>p.remove(),650)}})
 }
 
-// v83: iPhone Safari speech announcer. Uses installed English voice when available.
+// v84: iPhone Safari speech announcer. Uses installed English voice when available.
 let rgAnnouncerVoice=null;
 function rgLoadAnnouncerVoice(){
  try{
   if(!('speechSynthesis' in window))return;
   const voices=window.speechSynthesis.getVoices();
-  rgAnnouncerVoice=voices.find(v=>/^en-US/i.test(v.lang)&&/Samantha|Alex|Daniel|Aaron/i.test(v.name))
+  rgAnnouncerVoice=voices.find(v=>/^en-US/i.test(v.lang)&&/Samantha|Aaron|Alex/i.test(v.name))
     ||voices.find(v=>/^en/i.test(v.lang))||null;
  }catch(e){}
 }
@@ -691,15 +691,16 @@ function rgAnnounce(text){
   synth.cancel();
   const u=new SpeechSynthesisUtterance(text);
   u.lang='en-US';if(rgAnnouncerVoice)u.voice=rgAnnouncerVoice;
-  u.rate=.90;u.pitch=.82;u.volume=1;
+  // Higher pitch and brisk pacing for an arcade-style excited callout.
+  u.rate=1.12;u.pitch=1.35;u.volume=1;
   synth.speak(u);
  }catch(e){}
 }
 
-function v83Fever(steps,level,bonus,total,m){
+function v84Fever(steps,level,bonus,total,m){
  const burst=document.getElementById("feverBurst"),word=document.getElementById("feverWord"),math=document.getElementById("feverMath"),n=steps.length;
  word.textContent=n>=3?"JACKPOT!":n===2?"DOUBLE HIT!":level>=4?"AMAZING!":level===3?"EXCELLENT!":level===2?"GREAT!":"GOOD!";
- rgAnnounce(n>=3?"Jackpot!":n===2?"Double hit!":level>=5?"Unbelievable!":level>=4?"Amazing!":level===3?"Excellent!":level===2?"Great!":"Good!");
+ rgAnnounce(n>=3?"JACKPOT!!":n===2?"DOUBLE HIT!!":level>=5?"UNBELIEVABLE!!":level>=4?"AMAZING!!":level===3?"EXCELLENT!!":level===2?"GREAT!!":"GOOD!!");
  math.textContent=(n>1?n+" ROLES ×"+bonus.toFixed(1)+"  ·  ":"")+"COMBO ×"+m.toFixed(1)+"  ·  +"+total.toLocaleString();
  [burst,word,math].forEach(x=>{x.classList.remove("go");void x.offsetWidth;x.classList.add("go")});
 
@@ -726,7 +727,7 @@ async function lockAndScore(){
   const simultaneousBonus=steps.length>=3?2.0:steps.length===2?1.5:1.0;
   const feverTotal=Math.round(steps.reduce((a,x)=>a+x.base,0)*m*simultaneousBonus);
   RGImpact.begin(combo,steps.length);
-  v83Fever(steps,combo,simultaneousBonus,feverTotal,m);
+  v84Fever(steps,combo,simultaneousBonus,feverTotal,m);
   chainCelebration(combo,steps.length);
   let impactStep=0;
   for(const s of steps){
@@ -884,7 +885,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 </script>
 
 <script>
-/* v83 iPhone/Safari audio hardening */
+/* v84 iPhone/Safari audio hardening */
 (function(){
   let unlocked=false;
 
@@ -950,7 +951,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 
 
 <script>
-/* ROLL GRID v83 — single audio engine */
+/* ROLL GRID v84 — single audio engine */
 (function(){
   "use strict";
   const RGSound={
@@ -1039,7 +1040,7 @@ document.getElementById("closeHowTo").onclick=close;document.getElementById("how
 })();
 </script>
 
-<style id="v83-touch-fix">
+<style id="v84-touch-fix">
 #tray .die{position:relative;touch-action:none;-webkit-user-select:none;user-select:none}
 #tray .die::after{content:"";position:absolute;inset:-12px;border-radius:18px;background:transparent}
 #tray{touch-action:none}
