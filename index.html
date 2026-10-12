@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v106 — BRIGHT DICE FIX</title>
+<title>ROLL GRID 4 v107 — PLAY FEEL</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -637,6 +637,16 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .die{background-image:none;filter:none!important;opacity:1!important;box-shadow:inset 0 3px 4px #fffa,inset 0 -3px 6px #00162c24,0 4px 12px #0007,0 0 9px var(--glass-glow,#ffffff70)!important;border:2px solid #ffffffde!important}
 .die::before{height:24%!important;top:4px!important;left:7px!important;right:7px!important;opacity:.36!important;background:linear-gradient(#fff,transparent)!important}
 .die::after{background:none!important;border:1px solid #ffffff70!important}
+
+/* v107: cohesive rescue screen, visible hints and slightly more cinematic scoring */
+.rescuePanel{background:radial-gradient(ellipse at 50% 0%,#293a58 0%,#101a2e 42%,#060b17 100%)!important;border:2px solid #e5bc67!important;box-shadow:0 18px 65px #000d,0 0 26px #d7a74e55,inset 0 0 22px #ffdc7614!important}
+.rescueBoard{width:min(100%,330px)!important;gap:6px!important;padding:9px!important;border:3px solid #d6a952!important;border-radius:14px!important;background:linear-gradient(150deg,#19263a,#07101d)!important;box-shadow:inset 0 0 14px #000a,0 0 20px #e4b75855!important}
+.rescueTile{border:2px solid #ffffffbd!important;border-radius:13px!important;font-size:clamp(21px,5vw,28px)!important;text-shadow:0 2px 2px #0009!important}
+.rescueTile.rescueSuggested{z-index:1;border:3px solid #fff5a0!important;box-shadow:0 0 0 3px #ffc940a8,0 0 19px 5px #ffdf4dcc,inset 0 0 15px #fff7a080!important;animation:v107HintPulse 1s ease-in-out infinite alternate!important}
+@keyframes v107HintPulse{from{filter:brightness(1.15);box-shadow:0 0 0 2px #ffdb5a99,0 0 13px 3px #ffcb40a9,inset 0 0 8px #fff7a060}to{filter:brightness(1.48);box-shadow:0 0 0 4px #fff0a5,0 0 29px 9px #ffdb57e8,inset 0 0 19px #fff8b6b3}}
+#feverWord.go{filter:drop-shadow(0 0 13px #ffdb6a) drop-shadow(0 0 24px #ffd047a0)!important}
+#feverBurst.go{filter:brightness(1.2) saturate(1.2)!important}
+@media(prefers-reduced-motion:reduce){.rescueTile.rescueSuggested{animation:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -675,7 +685,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v106</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v107</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
@@ -1021,7 +1031,7 @@ function installBoardDrag(source,fromIndex){
    if(to!==fromIndex && !board[to]){
     board[to]=d;board[fromIndex]=null;
     placedThisTurn=placedThisTurn.map(v=>v===fromIndex?to:v);
-    render();return;
+    sfxPlace();render();return;
    }
   }
   // Dropping outside the board returns this die to its original tray slot.
@@ -1029,6 +1039,7 @@ function installBoardDrag(source,fromIndex){
   tray[d.turnTray]={wild:d.wild,n:d.n,c:d.c};
   placedThisTurn=placedThisTurn.filter(v=>v!==fromIndex);
   turn=Math.max(0,turn-1);
+  sfxPlace();
   render();
  }
  source.ontouchstart=e=>{if(e.touches.length!==1)return;e.preventDefault();const t=e.touches[0];begin(t.clientX,t.clientY)};
@@ -1110,7 +1121,7 @@ async function lockAndScore(){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    s.idx.forEach(j=>$("board").children[j].classList.add("flash"));
    RGImpact.hit(s.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,220));
+   await new Promise(r=>setTimeout(r,320));
    const gain=Math.round(s.base*m*simultaneousBonus);showScorePop(gain,m*simultaneousBonus);score+=gain;if(score>best){best=score;set("rg4best",best)}
    $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();
    log("+"+gain+" "+s.name+" / "+s.hand+" COMBO×"+m.toFixed(1)+(simultaneousBonus>1?" MULTI×"+simultaneousBonus.toFixed(1):""));s.idx.forEach(j=>clear.add(j));
@@ -1188,7 +1199,7 @@ async function applyWildRescue(i){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    step.idx.forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("flash")});
    RGImpact.hit(step.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,220));
+   await new Promise(r=>setTimeout(r,320));
    const gain=Math.round(step.base*m*bonus);
    showScorePop(gain,m*bonus);score+=gain;
    if(score>best){best=score;set("rg4best",best)}
