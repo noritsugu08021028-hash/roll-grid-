@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v109 — GLOBAL RANKING</title>
+<title>ROLL GRID 4 v110 — VIP SCORES</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -647,6 +647,35 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 #feverWord.go{filter:drop-shadow(0 0 13px #ffdb6a) drop-shadow(0 0 24px #ffd047a0)!important}
 #feverBurst.go{filter:brightness(1.2) saturate(1.2)!important}
 @media(prefers-reduced-motion:reduce){.rescueTile.rescueSuggested{animation:none!important}}
+
+/* v110 — VIP casino oversized scores and premium ranking */
+.hud{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr)}
+.stat:first-child{border:2px solid #ffcd55;background:radial-gradient(ellipse at top,#493015 0%,#10111d 70%);box-shadow:inset 0 1px 0 #ffe9a4,0 0 15px #f9ad3340}
+.stat:first-child b{font-size:clamp(30px,9vw,51px);color:#ffe19a;text-shadow:0 2px 0 #8d4b13,0 0 16px #ffae32;letter-spacing:-.045em}
+.stat:nth-child(2) b,.stat:nth-child(3) b{font-size:clamp(23px,6.8vw,36px)}
+.rankingOverlay{padding:10px}
+.rankingCard{width:min(520px,97vw);max-height:94dvh;padding:clamp(14px,3.5vw,24px);border:3px solid #dfae50;border-radius:27px;background:radial-gradient(ellipse at 50% 0%,#39301d 0%,#141624 36%,#070d1a 100%);box-shadow:0 0 0 2px #503b1d,0 0 38px #e6a93455,0 20px 65px #000}
+.rankingTop h2{font-size:clamp(28px,7vw,38px);color:#ffe1a1;text-shadow:0 0 15px #ffb63270}
+.rankingEyebrow{font-size:clamp(11px,2.7vw,14px);font-weight:900;letter-spacing:.16em;color:#f4c96d}
+.rankingBest{padding:14px 8px;margin:14px 0 18px;background:linear-gradient(135deg,#322413,#131728,#322413);border:2px solid #e7b64e;box-shadow:inset 0 0 20px #e7a73224,0 0 17px #e7a73222;font-size:15px;font-weight:900;color:#ffe4a6}
+.rankingBest b{font-size:clamp(54px,15vw,84px);line-height:1.13;letter-spacing:-.04em;color:#ffe6a3;text-shadow:0 3px 0 #7d4412,0 0 22px #ffbb49}
+.rankingList{gap:9px}
+.rankRow{grid-template-columns:52px minmax(0,1fr) auto;min-height:66px;padding:10px 13px;border:1.5px solid #41618b;border-radius:14px;background:linear-gradient(110deg,#0d213b,#091323);box-shadow:inset 0 1px 0 #ffffff12}
+.rankRow.top1{border:2px solid #f8c64d;background:linear-gradient(110deg,#574018,#1d1b27 80%);box-shadow:0 0 15px #ffbb3540}
+.rankRow.top2{background:linear-gradient(110deg,#29354b,#111b2d)}
+.rankRow.top3{background:linear-gradient(110deg,#40251c,#111b2d)}
+.rankNo{font-size:clamp(22px,5.6vw,30px);color:#ffd369}
+.rankScore{font-size:clamp(29px,7.5vw,43px);line-height:1.08;letter-spacing:-.035em;color:#fff}
+.rankDate{font-size:clamp(12px,3.2vw,17px);color:#bed1e6}
+.globalRanking .rankRow{grid-template-columns:46px minmax(0,1fr) auto;min-height:76px;border-color:#bd8b3e}
+.globalRanking .rankRow:first-child{background:linear-gradient(110deg,#58401c,#181d2e);border:2px solid #ffd15b;box-shadow:0 0 17px #ffbd3240}
+.globalRanking .rankScore{font-size:clamp(23px,6vw,33px);overflow:hidden;text-overflow:ellipsis}
+.globalRanking .rankDate{font-size:clamp(27px,7vw,41px);font-weight:1000;color:#ffe09b;text-shadow:0 0 13px #ffbb4660}
+.globalRanking h2{font-size:clamp(28px,7vw,36px)!important;color:#ffe0a0}
+.rankingBack{padding:16px 9px;min-height:56px;border-radius:15px;font-size:clamp(14px,3.5vw,18px);background:linear-gradient(#ffe18a,#ffbe2b 60%,#d78b16);border:1px solid #ffe79a;box-shadow:inset 0 2px 0 #fff4c2,0 5px 0 #7b4910;color:#281600}
+.resultScore{font-size:clamp(60px,17vw,92px);color:#ffe19a;text-shadow:0 3px 0 #98551c,0 0 22px #ffbb4d}
+@media(max-width:370px){.rankRow{grid-template-columns:38px minmax(0,1fr) auto;padding:9px 8px}.rankScore{font-size:27px}.globalRanking .rankDate{font-size:25px}.stat:first-child b{font-size:29px}}
+
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
