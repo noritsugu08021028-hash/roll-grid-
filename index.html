@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v98 — CASINO NEON FIX</title>
+<title>ROLL GRID 4 v99 — SLOT LIGHTS FIX</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -480,6 +480,25 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .actionRow{background:linear-gradient(90deg,rgba(7,9,20,.93),rgba(7,9,20,.83),rgba(7,9,20,.93));border-radius:12px}
 .appNav{background:#090b19!important}
 @media(prefers-reduced-motion:reduce){.app::before,.app::after{animation:none!important}}
+
+/* v99: only actual side scenery; center of source image is never painted */
+.app{isolation:isolate;background:#080b16!important}
+.app::before,.app::after{display:none!important;animation:none!important}
+.casinoBackdrop{position:absolute!important;inset:0;z-index:0!important;overflow:hidden;pointer-events:none;background:linear-gradient(90deg,#171022,#0b1020 25%,#080b16 50%,#0b1020 75%,#171022)}
+.casinoBackdrop .casinoLeft,.casinoBackdrop .casinoRight{position:absolute;top:0;bottom:0;width:27%;background-image:url("./rollgrid_casino_bg.webp");background-repeat:no-repeat;background-size:370.37% 100%;filter:saturate(1.13) contrast(1.06)}
+.casinoBackdrop .casinoLeft{left:0;background-position:left top}
+.casinoBackdrop .casinoRight{right:0;background-position:right top}
+.casinoBackdrop .casinoCenter{position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,#080b16 28%,#080b16 72%,transparent 100%)}
+.casinoBackdrop .neonBulbs{position:absolute;top:22%;left:2%;width:16%;height:34%;border:3px solid rgba(255,209,87,.65);border-radius:22px;box-shadow:0 0 8px #ffd966,0 0 19px #ff9d37,inset 0 0 11px #ffc65b;animation:v99Bulbs 1.35s steps(1,end) infinite}
+.casinoBackdrop .neonBulbs::before{content:"";position:absolute;inset:8px;border:3px dashed #ffdb74;border-radius:15px;filter:drop-shadow(0 0 7px #ffbd4e);animation:v99Chase .85s linear infinite}
+.casinoBackdrop .neonBulbs::after{content:"";position:absolute;inset:-9px;border:2px solid rgba(255,70,211,.65);border-radius:27px;box-shadow:0 0 11px #f52bc4;animation:v99Bulbs 1.8s steps(1,end) infinite reverse}
+.casinoBackdrop .blueLights{position:absolute;top:28%;right:2%;width:14%;height:29%;border-right:4px solid #45e8ff;border-top:4px solid #45e8ff;border-bottom:4px solid #45e8ff;border-radius:10px 28px 28px 10px;box-shadow:5px 0 15px #26cbff,inset -6px 0 15px #26cbff;animation:v99Blue 1.6s steps(1,end) infinite}
+@keyframes v99Bulbs{0%,19%,24%,59%,65%,100%{opacity:1}20%,23%,60%,64%{opacity:.12}}
+@keyframes v99Chase{0%{filter:drop-shadow(0 0 2px #ffb34d);opacity:.45}50%{filter:drop-shadow(0 0 14px #ffdf80);opacity:1}100%{filter:drop-shadow(0 0 2px #ffb34d);opacity:.45}}
+@keyframes v99Blue{0%,34%,44%,100%{opacity:1}35%,43%{opacity:.15}}
+.app>.brand,.app>.hud,.app>.boardFrame,.app>.diceDeck,.app>.actionRow,.app>.appNav{z-index:2!important}
+.boardFrame{animation:none!important;filter:none!important}
+@media(prefers-reduced-motion:reduce){.casinoBackdrop .neonBulbs,.casinoBackdrop .neonBulbs::before,.casinoBackdrop .neonBulbs::after,.casinoBackdrop .blueLights{animation:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -487,7 +506,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .howToCard h3{margin:13px 0 6px;color:#55eaff;font-size:11px;letter-spacing:.18em}.scoreRule{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;margin:5px 0;border:1px solid #174768;border-radius:10px;background:#061326;font-size:11px}.scoreRule b{font-size:17px;color:#ffd34d}.ruleText{font-size:10px;line-height:1.55;color:#c3d2e6}.formula{padding:10px;border:1px solid #ffbf2f;border-radius:10px;text-align:center;color:#fff3b0;font-size:10px;font-weight:900}.howToBack{width:100%;margin-top:12px;padding:11px;border:0;border-radius:12px;background:#ffd044;color:#241400;font-weight:1000}
 </style>
 </head><body>
-<div class="app">
+<div class="app"><div class="casinoBackdrop" aria-hidden="true"><div class="casinoLeft"></div><div class="casinoRight"></div><div class="casinoCenter"></div><div class="neonBulbs"></div><div class="blueLights"></div></div>
   <header class="brand">
     <button id="menu" class="iconBtn" type="button" aria-label="Restart">☰</button>
     <div class="logo">ROLL ◇ GRID</div>
@@ -518,7 +537,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v98</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v99</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
