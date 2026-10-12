@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v108 — COMBO TEMPO</title>
+<title>ROLL GRID 4 v109 — GLOBAL RANKING</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -685,7 +685,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v108</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v109</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
@@ -734,6 +734,11 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
     </div>
     <div class="rankingBest">BEST SCORE <b id="rankingBest">0</b></div>
     <div id="rankingList" class="rankingList"></div>
+    <div class="globalRanking" style="margin-top:16px;border-top:1px solid #b48b43;padding-top:12px">
+      <div class="rankingEyebrow">WORLDWIDE SCORES</div><h2 style="margin:5px 0 10px;font-size:21px">GLOBAL TOP 20</h2>
+      <div id="globalRankList" class="rankingList"><div class="rankEmpty">ランキングを読み込みます</div></div>
+      <button id="globalRankRefresh" class="rankingBack" type="button" style="margin-top:9px">REFRESH GLOBAL RANKING</button>
+    </div>
     <button id="rankingBack" class="rankingBack" type="button">BACK TO GAME</button>
   </section>
 </div>
@@ -755,7 +760,12 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .rescueTransform{animation:rescueTransform .44s ease-out!important;z-index:2}
 @keyframes rescueTransform{0%{transform:scale(1);filter:brightness(1)}40%{transform:scale(1.32) rotate(9deg);filter:brightness(2.6) drop-shadow(0 0 18px #fff)}100%{transform:scale(1);filter:brightness(1)}}
 </style>
-<div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
+<div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><div id="globalSubmit" style="margin:12px 0;padding:12px;border:1px solid #bd9953;border-radius:12px;background:#101827">
+      <div style="font-size:12px;color:#f6cf79;margin-bottom:7px">GLOBAL RANKING — スコアを登録</div>
+      <input id="globalNickname" maxlength="16" placeholder="ニックネーム（1〜16文字）" autocomplete="nickname" style="width:100%;padding:10px;border-radius:8px;border:1px solid #b48b43;background:#071323;color:white;font-size:16px">
+      <button id="globalSubmitBtn" type="button" style="width:100%;margin-top:8px;padding:10px;border-radius:9px;border:0;background:#f5c75d;color:#18130b;font-weight:800">世界ランキングに登録</button>
+      <div id="globalSubmitStatus" role="status" style="font-size:12px;margin-top:7px;color:#b9cadf">登録は任意です。ニックネームとスコアが公開されます。</div>
+    </div><button id="again">もう一度</button></div></div>
 <script>
 // v84 clean game engine
 let soundOn=true, audioCtx=null;
@@ -1552,4 +1562,41 @@ window.RGImpact=(()=>{
 })();
 </script>
 <div id="chainToast" aria-hidden="true"></div>
+<script>
+/* v109 — optional public ranking integration. Existing local ranking remains intact. */
+(()=>{
+ const API="https://2wzib0r02j.execute-api.ap-southeast-2.amazonaws.com/ranking";
+ const $=id=>document.getElementById(id);
+ const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+ async function refreshGlobal(){
+   const target=$("globalRankList");target.textContent="読み込み中…";
+   try{
+     const res=await fetch(API,{method:"GET",cache:"no-store"});
+     if(!res.ok)throw Error("HTTP "+res.status);
+     const data=await res.json();
+     const rows=Array.isArray(data.ranking)?data.ranking:[];
+     target.innerHTML=rows.length?rows.slice(0,20).map((r,i)=>
+       '<div class="rankRow"><div class="rankNo">'+(i+1)+'</div><div class="rankScore">'+safe(r.nickname||"PLAYER")+'</div><div class="rankDate">'+Number(r.score||0).toLocaleString()+'</div></div>'
+     ).join(""):'<div class="rankEmpty">まだ登録がありません。最初の挑戦者になろう！</div>';
+   }catch(e){target.textContent="ランキングを取得できません。時間をおいて再試行してください。";}
+ }
+ $("globalRankRefresh").addEventListener("click",refreshGlobal);
+ $("myRankingBtn").addEventListener("click",refreshGlobal);
+ $("globalSubmitBtn").addEventListener("click",async()=>{
+   const name=$("globalNickname").value.trim();
+   const score=Number(($("finalScore").textContent||"").replace(/,/g,""));
+   const status=$("globalSubmitStatus"),btn=$("globalSubmitBtn");
+   if(!name||name.length>16){status.textContent="ニックネームは1〜16文字で入力してください。";return;}
+   if(!Number.isInteger(score)||score<0||score>10000000){status.textContent="スコアを確認できません。";return;}
+   btn.disabled=true;status.textContent="登録中…";
+   try{
+     const res=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({nickname:name,score})});
+     if(!res.ok)throw Error("HTTP "+res.status);
+     status.textContent="登録できました！ MY RANKINGで順位を確認できます。";
+     btn.textContent="登録済み";btn.disabled=true;
+   }catch(e){status.textContent="登録できませんでした。通信状態を確認して再試行してください。";btn.disabled=false;}
+ });
+ new MutationObserver(()=>{if($("gameOver").classList.contains("show")){$("globalSubmitBtn").disabled=false;$("globalSubmitBtn").textContent="世界ランキングに登録";$("globalSubmitStatus").textContent="登録は任意です。ニックネームとスコアが公開されます。";}}).observe($("gameOver"),{attributes:true,attributeFilter:["class"]});
+})();
+</script>
 </body></html>
