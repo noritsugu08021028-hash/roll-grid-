@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v91 — VIP CASINO BACKDROP</title>
+<title>ROLL GRID 4 v92 — GOLDEN CASINO HALL</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -346,6 +346,24 @@ body::after{content:"";position:fixed;inset:10px;z-index:-1;pointer-events:none;
  linear-gradient(90deg,transparent,rgba(9,12,24,.24) 50%,transparent)}
 @media(max-width:480px){body::after{inset:5px;border-radius:16px;opacity:.72}body::before{opacity:.55}}
 @media(prefers-reduced-motion:reduce){body::before,body::after{animation:none!important}}
+
+/* v92 — visible casino backdrop, including narrow mobile view */
+html,body{background-color:#120e1d!important}
+body{background:
+ radial-gradient(ellipse 90% 32% at 50% 3%,rgba(255,200,100,.47),transparent 76%),
+ radial-gradient(ellipse 65% 70% at -12% 50%,rgba(151,56,112,.38),transparent 90%),
+ radial-gradient(ellipse 65% 70% at 112% 50%,rgba(66,90,175,.36),transparent 90%),
+ repeating-linear-gradient(90deg,transparent 0 16%,rgba(232,175,79,.07) 16.2%,transparent 17%,transparent 33%),
+ linear-gradient(180deg,#2b1c31 0%,#19152b 37%,#151628 70%,#080c17 100%)!important}
+body::before{opacity:1!important;background:
+ linear-gradient(90deg,rgba(241,180,84,.28) 0 2px,transparent 3px) 8% 0/42% 100%,
+ radial-gradient(ellipse 100% 50% at 50% 0%,rgba(250,202,113,.2),transparent 80%),
+ repeating-linear-gradient(135deg,transparent 0 17px,rgba(255,235,182,.028) 18px,transparent 19px 37px)!important}
+body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,187,91,.48)!important;border-radius:20px!important;box-shadow:inset 0 0 0 4px rgba(14,12,26,.65),inset 0 0 0 5px rgba(248,193,99,.26),0 0 28px rgba(236,175,83,.18)!important}
+.app{background:linear-gradient(90deg,rgba(10,12,23,.12),rgba(10,12,23,.02) 50%,rgba(10,12,23,.12));}
+.app::before{background:radial-gradient(ellipse 95% 65% at 50% 43%,rgba(237,174,90,.12),transparent 85%)!important}
+.brand{background:linear-gradient(90deg,transparent,rgba(210,143,57,.13),transparent);border-radius:18px}
+@media(max-width:480px){body::before{opacity:.8!important}body::after{inset:4px!important;border-width:1px!important;opacity:1!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
