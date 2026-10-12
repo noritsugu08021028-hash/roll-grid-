@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v87 — SMART ASSIST</title>
+<title>ROLL GRID 4 v88 — BALANCED ASSIST</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -494,21 +494,29 @@ function refillColorBag(){
 }
 function nextColor(){if(!colorBag.length)refillColorBag();return colorBag.pop()}
 function roll(){if(Math.random()<.03)return{wild:true,n:"★",c:"wild"};return{wild:false,n:1+Math.floor(Math.random()*4),c:nextColor()}}
-// v87: conservative 25% assist. Only modify the number when the existing
-// color can complete a valid 4-dice hand in one EMPTY cell.
-// Restore v86 by reverting this commit; WILD probability and color bag unchanged.
+// v88: 25% assist trigger, evenly split between v86 broad guidance
+// and v87 one-empty-cell completion guidance. Number only; colors unchanged.
 function assistedRoll(){
  const d=roll();
  if(d.wild||Math.random()>=.25||typeof board==='undefined')return d;
  const options=[];
+ const precise=Math.random()<.5;
  for(const [,ids] of patterns()){
-  const occupied=ids.filter(i=>board[i]);
-  const empty=ids.filter(i=>!board[i]);
-  if(occupied.length!==3||empty.length!==1)continue;
-  for(let n=1;n<=4;n++){
-   const trial={wild:false,c:d.c,n};
-   if(classify([...occupied.map(i=>board[i]),trial]).length){
-    options.push(n);
+  const filled=ids.map(i=>board[i]).filter(Boolean);
+  if(precise){
+   if(filled.length!==3||ids.every(i=>board[i]))continue;
+   for(let n=1;n<=4;n++){
+    if(classify([...filled,{wild:false,c:d.c,n}]).length)options.push(n);
+   }
+  }else{
+   if(filled.length<2||filled.length>3)continue;
+   for(let n=1;n<=4;n++){
+    const trial={wild:false,c:d.c,n};
+    const normal=filled.filter(x=>!x.wild).concat(trial);
+    const colors=normal.map(x=>x.c),nums=normal.map(x=>x.n);
+    const sc=new Set(colors).size<=1,dc=new Set(colors).size===normal.length;
+    const sn=new Set(nums).size<=1,dn=new Set(nums).size===normal.length;
+    if((sc||dc)&&(sn||dn))options.push(n);
    }
   }
  }
