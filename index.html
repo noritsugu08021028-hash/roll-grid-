@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v110 — VIP SCORES</title>
+<title>ROLL GRID 4 v111 — HUD LAYOUT FIX</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -675,6 +675,17 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .rankingBack{padding:16px 9px;min-height:56px;border-radius:15px;font-size:clamp(14px,3.5vw,18px);background:linear-gradient(#ffe18a,#ffbe2b 60%,#d78b16);border:1px solid #ffe79a;box-shadow:inset 0 2px 0 #fff4c2,0 5px 0 #7b4910;color:#281600}
 .resultScore{font-size:clamp(60px,17vw,92px);color:#ffe19a;text-shadow:0 3px 0 #98551c,0 0 22px #ffbb4d}
 @media(max-width:370px){.rankRow{grid-template-columns:38px minmax(0,1fr) auto;padding:9px 8px}.rankScore{font-size:27px}.globalRanking .rankDate{font-size:25px}.stat:first-child b{font-size:29px}}
+
+
+/* v111 — prevent enlarged HUD scores from colliding with board */
+.app{grid-template-rows:48px clamp(94px,10.5dvh,126px) minmax(0,1fr) 112px 62px 54px!important;row-gap:9px!important}
+.hud{min-height:0;position:relative;z-index:3}
+.stat{min-height:0;overflow:hidden;padding:5px 3px}
+.stat:first-child b{font-size:clamp(29px,7.7vw,48px);line-height:1;white-space:nowrap}
+.stat:nth-child(2) b{font-size:clamp(23px,6vw,37px);line-height:1;white-space:nowrap}
+.stat:nth-child(3) b{font-size:clamp(23px,6vw,37px);line-height:1;white-space:nowrap}
+.boardFrame{position:relative;z-index:1;min-height:0!important}
+@media(max-height:760px){.app{grid-template-rows:42px 90px minmax(0,1fr) 96px 54px 50px!important;row-gap:5px!important}.stat:first-child b{font-size:clamp(27px,7vw,40px)}}
 
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
