@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v95 — CASINO LOUNGE</title>
+<title>ROLL GRID 4 v96 — PHOTO CASINO</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -430,6 +430,13 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .app>.casinoScene{z-index:0!important}
 .app>.casinoScene~*{z-index:1}
 @media(max-width:480px){.casinoSlots{left:-12%;top:27%;width:42%;height:42%}.casinoTable{right:-15%;top:36%;width:51%;height:33%}.slotCabinet{border-width:2px}.tableSurface{border-width:6px}.cabTop{padding:4px 0}.tableChips i{width:10px;height:10px;border-width:2px}}
+
+/* v96 — real generated casino photo, never CSS imitation */
+.app{background:linear-gradient(90deg,rgba(5,6,16,.08),rgba(4,5,14,.24) 50%,rgba(5,6,16,.08)),url("./rollgrid_casino_bg.webp") center center/100% 100% no-repeat,linear-gradient(180deg,#30142d,#080b1a)!important}
+.app::before{display:none!important}.app::after{display:none!important}
+.brand{background:linear-gradient(90deg,rgba(9,8,17,.85),rgba(33,18,24,.88),rgba(9,8,17,.85))!important;border:1px solid rgba(246,191,103,.7);border-radius:12px;box-shadow:0 3px 18px #0008}
+.boardFrame{background:#070d1b!important;box-shadow:0 0 0 3px #170d15,0 0 0 5px #d7a35d,0 8px 35px #000c!important}
+.diceDeck,.stat,.appNav{background:rgba(7,9,21,.94)!important;backdrop-filter:blur(7px)}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -438,15 +445,6 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 </style>
 </head><body>
 <div class="app">
-  <div class="casinoScene" aria-hidden="true">
-    <div class="casinoGlow"></div>
-    <div class="casinoSlots">
-      <div class="slotCabinet rear"><div class="cabTop">ROYAL 777</div><div class="cabScreen"><span>7</span><span>7</span><span>7</span></div><div class="cabPanel">✦ BONUS ✦</div></div>
-      <div class="slotCabinet front"><div class="cabTop">JACKPOT</div><div class="cabScreen"><span>7</span><span>7</span><span>7</span></div><div class="cabPanel">◆ GOLD ◆</div></div>
-    </div>
-    <div class="casinoTable"><div class="tableSurface"><div class="tableInner"><div class="tableArc"></div><div class="tableCards"><span>A♠</span><span>K♥</span></div><div class="tableChips"><i></i><i></i><i></i></div></div></div><div class="tableApron"></div><div class="tableStand"></div></div>
-    <div class="casinoFloor"></div>
-  </div>
   <header class="brand">
     <button id="menu" class="iconBtn" type="button" aria-label="Restart">☰</button>
     <div class="logo">ROLL ◇ GRID</div>
@@ -477,7 +475,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v95</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v96</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
