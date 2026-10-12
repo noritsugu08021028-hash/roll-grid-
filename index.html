@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v93 — VIP CASINO INTERIOR</title>
+<title>ROLL GRID 4 v94 — CASINO FLOOR</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -385,6 +385,26 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .boardFrame{position:relative;box-shadow:0 0 0 5px rgba(29,19,35,.9),0 0 0 7px rgba(231,181,98,.58),0 0 28px rgba(244,181,73,.43),0 12px 40px rgba(0,0,0,.65)!important}
 .brand{border-top:1px solid rgba(255,216,136,.65);border-bottom:1px solid rgba(255,216,136,.32);background:linear-gradient(90deg,rgba(58,32,48,.5),rgba(160,94,57,.26),rgba(58,32,48,.5))!important}
 @media(max-width:480px){.app::after{inset:3px;border-width:1px}.app::before{opacity:1!important}}
+
+/* v94 — actual casino-floor props, not just gradient */
+.casinoScene{position:absolute!important;inset:0;z-index:0!important;pointer-events:none;overflow:hidden}
+.casinoSlot{position:absolute;top:25%;left:1.5%;width:23%;height:30%;max-height:260px;border:3px solid #d7a64e;border-radius:18px 18px 10px 10px;background:linear-gradient(110deg,#4a2045,#181328 38%,#462339 85%,#150d21);box-shadow:inset 0 0 0 3px #4d2b22,0 0 20px #f4ae5270;transform:perspective(350px) rotateY(13deg);display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;opacity:.9}
+.slotMarquee{font-size:clamp(8px,1.9vw,14px);font-weight:1000;color:#ffe6a0;text-shadow:0 0 8px #ffbf55;white-space:nowrap;border-bottom:2px dotted #ffdc83;width:95%;text-align:center;padding:7px 0}
+.slotReels{width:90%;display:flex;justify-content:center;gap:2px;background:#120e19;padding:6px 2px;border:2px solid #f2c578;border-radius:6px}
+.slotReels b{flex:1;min-width:0;text-align:center;background:linear-gradient(#fff6d6,#e6b65c,#fff4cb);border-radius:3px;color:#9a123b;font-size:clamp(16px,3.5vw,30px);text-shadow:0 1px #fff}
+.slotLights{font-size:clamp(7px,1.7vw,12px);color:#ffd56e;text-shadow:0 0 7px #ffb342;letter-spacing:2px}
+.slotBase{font-size:clamp(7px,1.5vw,11px);font-weight:900;color:#ffdfa1;letter-spacing:.08em}
+.casinoPoker{position:absolute;top:27%;right:1%;width:24%;height:25%;transform:perspective(320px) rotateY(-14deg);opacity:.94}
+.pokerRim{width:100%;height:66%;padding:7px;background:linear-gradient(145deg,#f8d18b,#88511f 55%,#d9a15d);border:2px solid #ffdc9a;border-radius:48%;box-shadow:0 10px 20px #000a,0 0 16px #ffcf7250}
+.pokerFelt{height:100%;border-radius:48%;background:radial-gradient(ellipse,#167858,#07533f 70%,#063626);border:3px solid #33200e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.pokerCards{display:flex;justify-content:center;gap:2px;transform:rotate(-8deg)}
+.pokerCards span{font-size:clamp(9px,1.8vw,16px);font-weight:900;color:#1b2030;background:#fff8e7;padding:3px 2px;border-radius:3px;box-shadow:0 2px 3px #0007}
+.pokerCards span:nth-child(2){color:#bf1937}
+.pokerMark{font-size:clamp(7px,1.6vw,12px);font-weight:900;letter-spacing:.15em;color:#e9cf83}
+.pokerChips{display:flex;gap:3px}.pokerChips i{width:12px;height:12px;border-radius:50%;border:3px dashed #f6d6a0;background:#b71942;box-shadow:0 1px 3px #0007}.pokerChips i:nth-child(2){background:#244cbb}.pokerChips i:nth-child(3){background:#1c1c1c}
+.pokerLeg{height:34%;width:15%;margin:-2px auto 0;background:linear-gradient(90deg,#503014,#d09a55,#482915);box-shadow:0 7px 10px #0007}
+.app>.casinoScene{z-index:0!important}
+@media(max-width:480px){.casinoSlot{top:31%;left:0;width:25%;height:19%;border-width:2px;opacity:.7}.casinoPoker{top:33%;right:0;width:25%;height:18%;opacity:.72}.pokerRim{padding:3px}.pokerCards span{padding:1px}.slotMarquee{padding:3px 0}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -393,6 +413,10 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 </style>
 </head><body>
 <div class="app">
+  <div class="casinoScene" aria-hidden="true">
+    <div class="casinoSlot"><div class="slotMarquee">★ JACKPOT ★</div><div class="slotReels"><b>7</b><b>7</b><b>7</b></div><div class="slotLights">● ● ● ● ●</div><div class="slotBase">♛  CASINO  ♛</div></div>
+    <div class="casinoPoker"><div class="pokerRim"><div class="pokerFelt"><div class="pokerCards"><span>A♠</span><span>K♥</span><span>Q♠</span></div><div class="pokerMark">POKER</div><div class="pokerChips"><i></i><i></i><i></i></div></div></div><div class="pokerLeg"></div></div>
+  </div>
   <header class="brand">
     <button id="menu" class="iconBtn" type="button" aria-label="Restart">☰</button>
     <div class="logo">ROLL ◇ GRID</div>
@@ -423,7 +447,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v93</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v94</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
