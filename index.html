@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v107 — PLAY FEEL</title>
+<title>ROLL GRID 4 v108 — COMBO TEMPO</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -685,7 +685,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v107</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v108</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
@@ -1121,7 +1121,7 @@ async function lockAndScore(){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    s.idx.forEach(j=>$("board").children[j].classList.add("flash"));
    RGImpact.hit(s.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,320));
+   await new Promise(r=>setTimeout(r,450));
    const gain=Math.round(s.base*m*simultaneousBonus);showScorePop(gain,m*simultaneousBonus);score+=gain;if(score>best){best=score;set("rg4best",best)}
    $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();
    log("+"+gain+" "+s.name+" / "+s.hand+" COMBO×"+m.toFixed(1)+(simultaneousBonus>1?" MULTI×"+simultaneousBonus.toFixed(1):""));s.idx.forEach(j=>clear.add(j));
@@ -1199,7 +1199,7 @@ async function applyWildRescue(i){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    step.idx.forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("flash")});
    RGImpact.hit(step.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,320));
+   await new Promise(r=>setTimeout(r,450));
    const gain=Math.round(step.base*m*bonus);
    showScorePop(gain,m*bonus);score+=gain;
    if(score>best){best=score;set("rg4best",best)}
