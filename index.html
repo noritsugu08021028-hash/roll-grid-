@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v100 — CLEAN CASINO BACKDROP</title>
+<title>ROLL GRID 4 v101 — CLEAN PHOTO & NEON</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -517,6 +517,22 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .boardFrame{animation:none!important;filter:none!important}
 .actionRow{background:#080b16!important}
 .appNav{background:#090b19!important}
+
+/* v101: hard crop to photographic upper casino area; source bottom UI is never sampled */
+.casinoBackdrop .casinoLeft,.casinoBackdrop .casinoRight{
+ top:0!important;bottom:auto!important;height:75%!important;width:27%!important;
+ background-size:370.37% 205%!important;background-position-y:top!important;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 77%,transparent 100%)!important;
+ mask-image:linear-gradient(to bottom,#000 0%,#000 77%,transparent 100%)!important;
+}
+.casinoBackdrop .casinoLeft{animation:v101SlotPulse 2.7s ease-in-out infinite!important}
+.casinoBackdrop .casinoRight{animation:v101PokerGlow 4.2s ease-in-out infinite!important}
+@keyframes v101SlotPulse{0%,100%{filter:brightness(.77) saturate(1.15)}35%{filter:brightness(1.35) saturate(1.65)}42%{filter:brightness(.9) saturate(1.25)}48%{filter:brightness(1.38) saturate(1.7)}65%{filter:brightness(.87) saturate(1.2)}}
+@keyframes v101PokerGlow{0%,100%{filter:brightness(.8) saturate(1.05)}50%{filter:brightness(1.22) saturate(1.38)}}
+.casinoBackdrop .neonBulbs,.casinoBackdrop .blueLights{display:none!important}
+.casinoBackdrop::before,.casinoBackdrop::after{display:none!important;content:none!important}
+.app::before,.app::after{display:none!important}
+@media(prefers-reduced-motion:reduce){.casinoBackdrop .casinoLeft,.casinoBackdrop .casinoRight{animation:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -555,7 +571,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v100</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v101</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
