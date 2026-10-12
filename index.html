@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v102 — CRYSTAL DICE & SLOT CHASE</title>
+<title>ROLL GRID 4 v103 — DIAMOND CUT CRYSTAL</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -556,6 +556,38 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 @keyframes v102Marquee{0%{background-position:0 0,0 100%;opacity:.5}50%{background-position:8px 0,-8px 100%;opacity:1}100%{background-position:16px 0,-16px 100%;opacity:.65}}
 @keyframes v102BulbShift{0%,100%{opacity:.35}50%{opacity:1}}
 @media(prefers-reduced-motion:reduce){.casinoBackdrop .slotChase,.casinoBackdrop .slotChase::after{animation:none!important}}
+
+/* v103 — precision cut crystal, not rounded plastic */
+.die{border-radius:13px!important;border:2px solid rgba(243,253,255,.98)!important;overflow:hidden!important;
+ backdrop-filter:blur(2px) brightness(1.1);-webkit-backdrop-filter:blur(2px) brightness(1.1);
+ box-shadow:inset 0 0 0 2px rgba(255,255,255,.35),inset 5px 5px 8px rgba(255,255,255,.62),inset -7px -9px 11px rgba(0,9,32,.55),0 0 0 1px rgba(158,229,255,.6),0 7px 14px #000a,0 0 17px var(--gem-glow,rgba(255,255,255,.55))!important;
+ text-shadow:0 2px 2px #000a,0 0 5px #fff8!important}
+.die.red{--gem-glow:#ff5b9a99;background:linear-gradient(135deg,#fff8 0%,transparent 22%),conic-gradient(from 35deg at 48% 44%,#ffb6cb 0deg,#b80d4b 60deg,#ff8aab 110deg,#480f35 165deg,#f35485 220deg,#780d39 285deg,#ffd2df 340deg,#ffb6cb 360deg)!important}
+.die.blue{--gem-glow:#57d5ff99;background:linear-gradient(135deg,#fff9 0%,transparent 22%),conic-gradient(from 35deg at 48% 44%,#d5faff 0deg,#006bc2 60deg,#74dcff 110deg,#06275e 165deg,#2aa5ec 220deg,#0b376c 285deg,#e5ffff 340deg,#d5faff 360deg)!important}
+.die.green{--gem-glow:#51ffd4aa;background:linear-gradient(135deg,#fff9 0%,transparent 22%),conic-gradient(from 35deg at 48% 44%,#d6fff2 0deg,#00886c 60deg,#70f7ce 110deg,#063e3d 165deg,#1bd4a3 220deg,#075448 285deg,#e5fff6 340deg,#d6fff2 360deg)!important}
+.die.yellow{--gem-glow:#ffe88baa;background:linear-gradient(135deg,#fffc 0%,transparent 22%),conic-gradient(from 35deg at 48% 44%,#fffdf1 0deg,#bf7c1a 60deg,#fff2aa 110deg,#684015 165deg,#e8b753 220deg,#976522 285deg,#ffffde 340deg,#fffdf1 360deg)!important;color:#231809!important;text-shadow:0 1px 2px #fff!important}
+.die.wild{--gem-glow:#e5a0ffbb;background:linear-gradient(135deg,#fffc 0%,transparent 22%),conic-gradient(from 35deg at 48% 44%,#fff 0deg,#9850d2 60deg,#f0c4ff 110deg,#3d226e 165deg,#c080f5 220deg,#693d9f 285deg,#fff 340deg,#fff 360deg)!important}
+.die::before{inset:0!important;width:100%!important;height:100%!important;border-radius:inherit!important;opacity:1!important;background:
+ linear-gradient(138deg,rgba(255,255,255,.82) 0 3%,transparent 4% 17%,rgba(255,255,255,.35) 18% 20%,transparent 21%),
+ linear-gradient(28deg,transparent 0 62%,rgba(255,255,255,.22) 63% 68%,transparent 69%),
+ linear-gradient(152deg,transparent 0 48%,rgba(255,255,255,.19) 49% 51%,transparent 52%),
+ linear-gradient(45deg,rgba(255,255,255,.48),transparent 31%)!important;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.die::after{content:"";position:absolute;inset:3px;border:1px solid rgba(255,255,255,.55);border-radius:10px;pointer-events:none;background:
+ linear-gradient(135deg,rgba(255,255,255,.45) 0 14%,transparent 14.5%),
+ linear-gradient(225deg,rgba(255,255,255,.29) 0 13%,transparent 13.5%),
+ linear-gradient(315deg,rgba(255,255,255,.25) 0 14%,transparent 14.5%),
+ linear-gradient(45deg,rgba(255,255,255,.17) 0 14%,transparent 14.5%);mix-blend-mode:screen}
+/* Remove fake dotted border. Only the photographed slot's reels and sign glow. */
+.casinoBackdrop .slotChase{display:none!important;animation:none!important}
+.casinoBackdrop .casinoLeft{animation:none!important;filter:saturate(1.12) contrast(1.04)!important}
+.casinoBackdrop .casinoRight{animation:none!important;filter:saturate(1.05)!important}
+.casinoBackdrop .slotReelGlow{position:absolute;z-index:2;pointer-events:none;top:40%;left:4.3%;width:12.7%;height:27%;border-radius:26px;mix-blend-mode:screen;background:
+ radial-gradient(ellipse 60% 17% at 50% 30%,rgba(255,73,175,.52),transparent 100%),
+ radial-gradient(ellipse 70% 20% at 50% 53%,rgba(255,177,67,.43),transparent 100%),
+ radial-gradient(ellipse 60% 20% at 50% 76%,rgba(242,38,132,.42),transparent 100%);
+ filter:blur(12px);animation:v103Jackpot 3.4s ease-in-out infinite}
+@keyframes v103Jackpot{0%,100%{opacity:.1;transform:scale(.98)}20%{opacity:.65}28%{opacity:.12}35%{opacity:.88}48%{opacity:.35}55%{opacity:1;transform:scale(1.09)}70%{opacity:.22}}
+@media(prefers-reduced-motion:reduce){.casinoBackdrop .slotReelGlow{animation:none!important;opacity:.25}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -563,7 +595,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .howToCard h3{margin:13px 0 6px;color:#55eaff;font-size:11px;letter-spacing:.18em}.scoreRule{display:flex;justify-content:space-between;align-items:center;padding:9px 10px;margin:5px 0;border:1px solid #174768;border-radius:10px;background:#061326;font-size:11px}.scoreRule b{font-size:17px;color:#ffd34d}.ruleText{font-size:10px;line-height:1.55;color:#c3d2e6}.formula{padding:10px;border:1px solid #ffbf2f;border-radius:10px;text-align:center;color:#fff3b0;font-size:10px;font-weight:900}.howToBack{width:100%;margin-top:12px;padding:11px;border:0;border-radius:12px;background:#ffd044;color:#241400;font-weight:1000}
 </style>
 </head><body>
-<div class="app"><div class="casinoBackdrop" aria-hidden="true"><div class="casinoLeft"></div><div class="casinoRight"></div><div class="casinoCenter"></div><div class="slotChase"></div><div class="neonBulbs"></div><div class="blueLights"></div></div>
+<div class="app"><div class="casinoBackdrop" aria-hidden="true"><div class="casinoLeft"></div><div class="casinoRight"></div><div class="casinoCenter"></div><div class="slotReelGlow"></div><div class="slotChase"></div><div class="neonBulbs"></div><div class="blueLights"></div></div>
   <header class="brand">
     <button id="menu" class="iconBtn" type="button" aria-label="Restart">☰</button>
     <div class="logo">ROLL ◇ GRID</div>
@@ -594,7 +626,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v102</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v103</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
