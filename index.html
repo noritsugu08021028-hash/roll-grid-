@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v99 — SLOT LIGHTS FIX</title>
+<title>ROLL GRID 4 v100 — CLEAN CASINO BACKDROP</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -499,6 +499,24 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .app>.brand,.app>.hud,.app>.boardFrame,.app>.diceDeck,.app>.actionRow,.app>.appNav{z-index:2!important}
 .boardFrame{animation:none!important;filter:none!important}
 @media(prefers-reduced-motion:reduce){.casinoBackdrop .neonBulbs,.casinoBackdrop .neonBulbs::before,.casinoBackdrop .neonBulbs::after,.casinoBackdrop .blueLights{animation:none!important}}
+
+/* v100 — eliminate fake neon boxes and all photo-baked lower game controls */
+.app{background:#080b16!important;isolation:isolate}
+.app::before,.app::after{display:none!important}
+.casinoBackdrop{inset:0!important;background:#080b16!important}
+.casinoBackdrop .casinoLeft,.casinoBackdrop .casinoRight{
+ top:0!important;bottom:auto!important;height:73%!important;width:27%!important;
+ background-size:370.37% 137%!important;background-position-y:top!important;
+ -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 65%,transparent 100%);
+ mask-image:linear-gradient(to bottom,#000 0%,#000 65%,transparent 100%);
+}
+.casinoBackdrop .casinoCenter{background:linear-gradient(90deg,transparent 0%,#080b16 28%,#080b16 72%,transparent 100%)!important}
+.casinoBackdrop .neonBulbs,.casinoBackdrop .blueLights{display:none!important;animation:none!important}
+.casinoBackdrop::before,.casinoBackdrop::after{content:none!important;display:none!important}
+.app>.brand,.app>.hud,.app>.boardFrame,.app>.diceDeck,.app>.actionRow,.app>.appNav{z-index:3!important}
+.boardFrame{animation:none!important;filter:none!important}
+.actionRow{background:#080b16!important}
+.appNav{background:#090b19!important}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -537,7 +555,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v99</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v100</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
