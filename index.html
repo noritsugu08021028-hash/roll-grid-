@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v96 — PHOTO CASINO</title>
+<title>ROLL GRID 4 v97 — ANIMATED CASINO NEON</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -437,6 +437,27 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .brand{background:linear-gradient(90deg,rgba(9,8,17,.85),rgba(33,18,24,.88),rgba(9,8,17,.85))!important;border:1px solid rgba(246,191,103,.7);border-radius:12px;box-shadow:0 3px 18px #0008}
 .boardFrame{background:#070d1b!important;box-shadow:0 0 0 3px #170d15,0 0 0 5px #d7a35d,0 8px 35px #000c!important}
 .diceDeck,.stat,.appNav{background:rgba(7,9,21,.94)!important;backdrop-filter:blur(7px)}
+
+/* v97 — animated ambient neon on top of photographic casino background */
+.app{isolation:isolate}
+.app::before{content:"";display:block!important;position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.62!important;background:
+ radial-gradient(ellipse 24% 38% at 6% 44%,rgba(255,44,166,.35),transparent 80%),
+ radial-gradient(ellipse 26% 36% at 96% 42%,rgba(30,199,255,.35),transparent 80%),
+ radial-gradient(ellipse 75% 16% at 50% 4%,rgba(255,190,76,.23),transparent 85%)!important;
+ animation:casinoNeonBreath 5.5s ease-in-out infinite alternate}
+.app::after{content:"";display:block!important;position:absolute;inset:0;z-index:0;pointer-events:none;border:0!important;box-shadow:none!important;opacity:.45!important;background:
+ linear-gradient(110deg,transparent 28%,rgba(255,220,154,.0) 42%,rgba(255,221,155,.15) 49%,rgba(255,221,155,.0) 56%,transparent 72%),
+ radial-gradient(ellipse 18% 44% at 9% 50%,rgba(255,39,185,.23),transparent 95%),
+ radial-gradient(ellipse 18% 44% at 91% 50%,rgba(0,199,255,.24),transparent 95%)!important;
+ background-size:190% 100%,100% 100%,100% 100%;
+ animation:casinoLightSweep 10s ease-in-out infinite,casinoNeonFlicker 7s ease-in-out infinite}
+.app > .brand,.app > .hud,.app > .boardFrame,.app > .diceDeck,.app > .actionRow,.app > .appNav{position:relative;z-index:2}
+.boardFrame{animation:casinoGoldAura 5.5s ease-in-out infinite alternate}
+@keyframes casinoNeonBreath{0%{opacity:.35;filter:hue-rotate(-8deg)}50%{opacity:.72;filter:hue-rotate(5deg)}100%{opacity:.48;filter:hue-rotate(14deg)}}
+@keyframes casinoLightSweep{0%,10%{background-position:100% 0,0 0,0 0}75%,100%{background-position:-100% 0,0 0,0 0}}
+@keyframes casinoNeonFlicker{0%,100%{opacity:.4}28%{opacity:.6}30%{opacity:.46}32%{opacity:.68}60%{opacity:.43}85%{opacity:.57}}
+@keyframes casinoGoldAura{0%{filter:drop-shadow(0 0 2px rgba(252,193,84,.1))}100%{filter:drop-shadow(0 0 11px rgba(255,197,95,.34))}}
+@media(prefers-reduced-motion:reduce){.app::before,.app::after,.boardFrame{animation:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -475,7 +496,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v96</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v97</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
