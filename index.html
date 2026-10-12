@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v92 — GOLDEN CASINO HALL</title>
+<title>ROLL GRID 4 v93 — VIP CASINO INTERIOR</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -364,6 +364,27 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 .app::before{background:radial-gradient(ellipse 95% 65% at 50% 43%,rgba(237,174,90,.12),transparent 85%)!important}
 .brand{background:linear-gradient(90deg,transparent,rgba(210,143,57,.13),transparent);border-radius:18px}
 @media(max-width:480px){body::before{opacity:.8!important}body::after{inset:4px!important;border-width:1px!important;opacity:1!important}}
+
+/* v93 — visible ornamental architecture inside the game viewport */
+.app{isolation:isolate;position:relative;background:
+ linear-gradient(90deg,rgba(110,53,70,.26),transparent 22%,transparent 78%,rgba(53,72,123,.26)),
+ repeating-linear-gradient(90deg,rgba(250,204,114,.10) 0 2px,transparent 2px 16px,rgba(0,0,0,.12) 16px 19px,transparent 19px 31px),
+ linear-gradient(180deg,#352239 0%,#191b30 42%,#0b1224 100%)!important}
+.app::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1!important;
+ background:
+ radial-gradient(ellipse 75% 20% at 50% 0%,rgba(255,216,134,.55),transparent 95%),
+ linear-gradient(90deg,transparent 0 2%,rgba(250,202,110,.6) 2.2%,rgba(110,64,36,.7) 2.6%,transparent 3.1%,transparent 96.9%,rgba(110,64,36,.7) 97.4%,rgba(250,202,110,.6) 97.8%,transparent 98%),
+ repeating-linear-gradient(45deg,transparent 0 21px,rgba(255,211,143,.065) 22px,transparent 24px 44px),
+ repeating-linear-gradient(-45deg,transparent 0 21px,rgba(255,211,143,.065) 22px,transparent 24px 44px)!important}
+.app::after{content:"";position:absolute;inset:7px;z-index:0;pointer-events:none;border:2px solid rgba(255,205,112,.72);border-radius:21px;box-shadow:inset 0 0 0 5px rgba(27,18,34,.7),inset 0 0 0 7px rgba(244,182,81,.22),inset 0 0 36px rgba(232,165,78,.25),0 0 19px rgba(240,184,98,.2);
+ background:linear-gradient(135deg,rgba(255,226,152,.65) 0 3px,transparent 3px) top left/60px 60px no-repeat,
+ linear-gradient(225deg,rgba(255,226,152,.65) 0 3px,transparent 3px) top right/60px 60px no-repeat,
+ linear-gradient(45deg,rgba(255,226,152,.65) 0 3px,transparent 3px) bottom left/60px 60px no-repeat,
+ linear-gradient(315deg,rgba(255,226,152,.65) 0 3px,transparent 3px) bottom right/60px 60px no-repeat}
+.app > *{position:relative;z-index:1}
+.boardFrame{position:relative;box-shadow:0 0 0 5px rgba(29,19,35,.9),0 0 0 7px rgba(231,181,98,.58),0 0 28px rgba(244,181,73,.43),0 12px 40px rgba(0,0,0,.65)!important}
+.brand{border-top:1px solid rgba(255,216,136,.65);border-bottom:1px solid rgba(255,216,136,.32);background:linear-gradient(90deg,rgba(58,32,48,.5),rgba(160,94,57,.26),rgba(58,32,48,.5))!important}
+@media(max-width:480px){.app::after{inset:3px;border-width:1px}.app::before{opacity:1!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -402,7 +423,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v84</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v93</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
