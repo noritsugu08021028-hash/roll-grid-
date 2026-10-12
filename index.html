@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v97 — ANIMATED CASINO NEON</title>
+<title>ROLL GRID 4 v98 — CASINO NEON FIX</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -458,6 +458,28 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 @keyframes casinoNeonFlicker{0%,100%{opacity:.4}28%{opacity:.6}30%{opacity:.46}32%{opacity:.68}60%{opacity:.43}85%{opacity:.57}}
 @keyframes casinoGoldAura{0%{filter:drop-shadow(0 0 2px rgba(252,193,84,.1))}100%{filter:drop-shadow(0 0 11px rgba(255,197,95,.34))}}
 @media(prefers-reduced-motion:reduce){.app::before,.app::after,.boardFrame{animation:none!important}}
+
+/* v98 — hide baked-in UI from photo and add visible moving neon */
+.app{isolation:isolate;background-image:
+ linear-gradient(90deg,rgba(5,6,16,.02) 0 18%,rgba(7,9,20,.88) 26%,rgba(7,9,20,.96) 50%,rgba(7,9,20,.88) 74%,rgba(5,6,16,.03) 83%),
+ url("./rollgrid_casino_bg.webp")!important;background-position:center center!important;background-size:100% 100%!important}
+.app::before{display:block!important;content:"";position:absolute;inset:0;z-index:1!important;pointer-events:none;opacity:1!important;filter:none!important;background:
+ linear-gradient(90deg,transparent 0%,rgba(255,30,147,.42) 7%,transparent 17%,transparent 83%,rgba(0,191,255,.36) 94%,transparent 100%),
+ linear-gradient(110deg,transparent 0 32%,rgba(255,220,143,.0) 43%,rgba(255,222,148,.24) 49%,rgba(255,222,148,0) 55%,transparent 68%)!important;
+ background-size:100% 100%,220% 100%!important;
+ animation:v98Pulse 3.4s ease-in-out infinite alternate,v98Sweep 6s linear infinite!important}
+.app::after{display:block!important;content:"";position:absolute;inset:0;z-index:1!important;pointer-events:none;opacity:1!important;border:0!important;box-shadow:none!important;background:
+ radial-gradient(ellipse 19% 25% at 6% 38%,rgba(255,25,163,.47),transparent 90%),
+ radial-gradient(ellipse 20% 26% at 94% 43%,rgba(38,187,255,.39),transparent 90%)!important;
+ animation:v98Flash 2.1s ease-in-out infinite alternate!important}
+@keyframes v98Pulse{0%{opacity:.35}100%{opacity:1}}
+@keyframes v98Sweep{0%{background-position:0 0,100% 0}100%{background-position:0 0,-100% 0}}
+@keyframes v98Flash{0%,20%{opacity:.24}35%{opacity:.85}43%{opacity:.3}52%,100%{opacity:.85}}
+.app>.brand,.app>.hud,.app>.boardFrame,.app>.diceDeck,.app>.actionRow,.app>.appNav{z-index:3!important}
+.diceDeck{background:#090b19!important}
+.actionRow{background:linear-gradient(90deg,rgba(7,9,20,.93),rgba(7,9,20,.83),rgba(7,9,20,.93));border-radius:12px}
+.appNav{background:#090b19!important}
+@media(prefers-reduced-motion:reduce){.app::before,.app::after{animation:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
@@ -496,7 +518,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 
 <div id="howToOverlay" class="howToOverlay">
 <section class="howToCard">
- <div class="howToTop"><div><small>ROLL GRID 4 · v97</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
+ <div class="howToTop"><div><small>ROLL GRID 4 · v98</small><h2>HOW TO PLAY</h2></div><button id="closeHowTo">×</button></div>
 
  <div class="simpleIntro">4つのダイスで役を作って SCORE!</div>
 
