@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v88 — BALANCED ASSIST</title>
+<title>ROLL GRID 4 v89 — ADAPTIVE ASSIST</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -494,11 +494,15 @@ function refillColorBag(){
 }
 function nextColor(){if(!colorBag.length)refillColorBag();return colorBag.pop()}
 function roll(){if(Math.random()<.03)return{wild:true,n:"★",c:"wild"};return{wild:false,n:1+Math.floor(Math.random()*4),c:nextColor()}}
-// v88: 25% assist trigger, evenly split between v86 broad guidance
-// and v87 one-empty-cell completion guidance. Number only; colors unchanged.
+// v89: adaptive assist by occupied cells (0-7: 0%, 8-11: 5%, 12-15: 15%).
+// Keep v88's 50/50 broad/precise candidate selection. Only number is adjusted.
+function assistRateForBoard(){
+ const filled=board.filter(Boolean).length;
+ return filled>=12 ? .15 : filled>=8 ? .05 : 0;
+}
 function assistedRoll(){
  const d=roll();
- if(d.wild||Math.random()>=.25||typeof board==='undefined')return d;
+ if(d.wild||typeof board==='undefined'||Math.random()>=assistRateForBoard())return d;
  const options=[];
  const precise=Math.random()<.5;
  for(const [,ids] of patterns()){
