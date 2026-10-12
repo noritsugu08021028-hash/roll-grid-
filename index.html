@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v89 — ADAPTIVE ASSIST</title>
+<title>ROLL GRID 4 v90 — LUXE NEON</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -289,6 +289,36 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 #tray .nextslot{position:relative!important;align-self:stretch!important;justify-self:stretch!important;width:100%!important;height:100%!important;min-height:0!important;touch-action:none!important;overflow:visible!important}
 #tray .nextslot .die{pointer-events:none!important}
 #tray .nextslot.used{pointer-events:none!important}
+
+/* v90 — luxury casino finish, arcade jackpot energy; visual-only */
+:root{--cyan:#70dce8;--blue:#3d80b8;--pink:#f356c3;--gold:#f3c66a;--ink:#070a12}
+body{background:radial-gradient(ellipse at 50% -12%,rgba(197,141,47,.19),transparent 43%),radial-gradient(ellipse at 100% 70%,rgba(73,35,117,.19),transparent 47%),linear-gradient(155deg,#05070e,#101323 53%,#05060d)}
+.logo{color:#fff2cf;letter-spacing:.065em;text-shadow:0 2px 1px #553710,0 0 13px rgba(244,192,91,.75),0 0 30px rgba(199,127,32,.35)}
+.iconBtn{border:1px solid #b18b4a;background:linear-gradient(155deg,#22253a,#070b17);box-shadow:inset 0 1px rgba(255,240,186,.25),0 2px 10px #000}
+.stat{border:1px solid rgba(221,181,102,.58);background:linear-gradient(165deg,#20202b,#0b101d 65%,#080a12);box-shadow:inset 0 1px rgba(255,240,195,.15),0 4px 13px #0008}
+.stat:nth-child(2){border-color:#d4a54b}.stat:nth-child(3){border-color:#9e77b6}
+.stat b{font-variant-numeric:tabular-nums;text-shadow:0 0 14px rgba(255,221,157,.18)}
+.boardFrame{border:3px solid #d6a951;outline:1px solid #fff0ae;background:linear-gradient(145deg,#33271b,#0c111d 28%,#080b14 70%,#382a16);box-shadow:0 0 0 3px #151018,0 7px 28px #000b,inset 0 0 17px rgba(241,185,81,.24)!important}
+.board .cell,.board .cell:nth-child(2),.board .cell:nth-child(4),.board .cell:nth-child(5),.board .cell:nth-child(7),.board .cell:nth-child(10),.board .cell:nth-child(12),.board .cell:nth-child(13),.board .cell:nth-child(15){border:1px solid rgba(184,149,88,.58)!important;background:radial-gradient(circle at 35% 20%,#1d2535,#0b101c 65%,#070a12);box-shadow:inset 0 2px 9px #000a,inset 0 1px rgba(255,225,161,.1)}
+.board .cell.target{border-color:#ffe0a0!important;background:radial-gradient(circle,#31444b,#101622)!important;box-shadow:inset 0 0 18px rgba(250,202,99,.4),0 0 9px rgba(245,201,111,.4)!important}
+.diceDeck{border:1px solid #b99252;background:linear-gradient(155deg,#222235,#0b101c 54%,#11101d);box-shadow:inset 0 1px rgba(255,233,180,.18),0 5px 22px #0009!important}
+.deckTitle{color:#f9e2aa;text-shadow:0 0 12px rgba(242,194,96,.35)}
+.die{border:2px solid rgba(255,240,207,.83);border-radius:17px;text-shadow:0 2px 3px #0008;box-shadow:inset 2px 4px 7px rgba(255,255,255,.45),inset -5px -9px 14px rgba(0,0,0,.4),inset 0 0 0 2px rgba(0,0,0,.18),0 5px 10px #000b,0 0 9px rgba(240,197,103,.14)}
+.die:before{width:58%;height:24%;left:12%;top:8%;transform:rotate(-20deg);background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,0));filter:blur(1px);opacity:.65}
+.red{background:linear-gradient(140deg,#ffb1ac 0%,#dc3349 32%,#910c2a 74%,#440719)}
+.blue{background:linear-gradient(140deg,#b4e4ff 0%,#297fcf 35%,#15428b 73%,#081c48)}
+.yellow{background:linear-gradient(140deg,#fff5c5 0%,#f5c856 32%,#b67c17 74%,#5a3207);color:#2a1705;text-shadow:0 1px #fff8}
+.green{background:linear-gradient(140deg,#b7ffe0 0%,#25b77c 34%,#096d57 74%,#06372f)}
+.wild{background:linear-gradient(140deg,#fff9da,#cf9bff 40%,#a83dba 72%,#50257b)}
+#lock{border:3px double #fff3bd;background:radial-gradient(circle at 36% 18%,#fff9d4,#f6ce70 34%,#b77522 73%,#643b13);box-shadow:inset 0 2px 5px #fff9,0 0 0 3px #5b3a17,0 4px 19px #000b,0 0 18px rgba(255,190,77,.35)}
+.appNav{border:1px solid #99774a;background:linear-gradient(#181b2a,#090c15)}
+.appNav button{border:1px solid #6c5a4d;background:linear-gradient(160deg,#29273b,#0e1220);color:#f9edce}
+.appNav button:first-child{border-color:#bd78b8}
+#comboCallout{color:#fff5ce;-webkit-text-stroke:1px #8d551e;text-shadow:0 2px 0 #62331a,0 0 12px #fff2ae,0 0 28px #ffc35c,0 0 46px #eb5dd8}
+#comboCallout .sub{color:#baf9ff;text-shadow:0 0 12px #4ce7ff}
+#scorePop{color:#fff4c3;-webkit-text-stroke:1px #8d5c16;text-shadow:0 2px 0 #663b12,0 0 15px #ffdb69,0 0 33px #ff9d4d}
+.result,.rankingCard{border-color:#d6ab5f;background:linear-gradient(160deg,#202033,#0b101e 70%,#19131b);box-shadow:0 12px 36px #000a}
+@media(prefers-reduced-motion:reduce){.die,.cell{transition:none!important}}
 </style><style>
 .howToOverlay{position:fixed;inset:0;z-index:31000;background:rgba(0,3,12,.95);display:none;place-items:center;padding:16px}.howToOverlay.show{display:grid}
 .howToCard{width:min(430px,95vw);max-height:90dvh;overflow:auto;background:linear-gradient(180deg,#07182f,#020817);border:2px solid #ffbf2f;border-radius:22px;padding:16px;box-shadow:0 0 28px rgba(255,184,0,.25)}
