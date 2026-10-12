@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v85 — WILD RESCUE</title>
+<title>ROLL GRID 4 v86 — RESCUE FX</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -381,8 +381,23 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 </div>
 
 <div id="feverFx"><div id="feverBurst"></div><div id="feverWord"></div><div id="feverMath"></div></div>
-<div id="wildRescue" class="overlay"><div class="result" style="max-width:390px"><h2 style="color:#ffce58">WILD RESCUE ★</h2><p style="font-size:13px;line-height:1.5">手詰まり！ 1ゲームに1回、盤面のダイスをWILDに変えて復活できます。<br><small>※広告は未接続・無料体験版</small></p><div id="rescueGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px auto;max-width:290px"></div><p id="rescueHint" style="font-size:12px;color:#aeefff">置き換えるダイスをタップ</p><button id="rescueSkip" style="margin-top:8px">救済せず終了</button></div></div>
-<style>#wildRescue #rescueGrid button{width:100%;aspect-ratio:1;border:2px solid #66799a;border-radius:10px;font-size:20px;font-weight:bold;color:#fff;cursor:pointer}#wildRescue #rescueGrid button:active{border-color:#ffce58;transform:scale(.95)}</style><div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
+<div id="wildRescue" class="overlay"><div class="result rescuePanel"><div class="rescueEyebrow">✦ SECOND CHANCE ✦</div><h2>WILD RESCUE</h2><p class="rescueCopy">好きなダイスを選んで<br><strong>WILD ★ に変身！</strong></p><div id="rescueGrid" class="rescueBoard"></div><p id="rescueHint">★ 置き換えるダイスをタップ ★</p><div class="rescueFoot">1ゲームに1回だけ使える復活チャンス<br><small>広告なしのお試し版</small></div><button id="rescueSkip">復活せずに終了</button></div></div>
+<style>
+.rescuePanel{width:min(92vw,370px)!important;max-height:92dvh;overflow:auto;padding:19px 16px!important;border:2px solid #eebc54!important;border-radius:22px!important;background:radial-gradient(ellipse at top,#233056,#080f25 72%)!important;box-shadow:0 0 30px #ffcb4944,inset 0 0 26px #10d8ff13!important;text-align:center}
+.rescueEyebrow{color:#5be9ff;font-size:11px;font-weight:900;letter-spacing:3px;margin-bottom:3px}
+.rescuePanel h2{font-size:26px!important;letter-spacing:2px;color:#ffdf7c!important;text-shadow:0 0 15px #ffc850aa;margin:4px 0 8px!important}
+.rescueCopy{color:#dbefff;font-size:13px;line-height:1.55;margin:4px 0 10px}.rescueCopy strong{color:#ffdb76;font-size:17px}
+.rescueBoard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;width:min(100%,270px);margin:10px auto;padding:10px;border:2px solid #4bc7f4;border-radius:16px;background:#050b1c;box-shadow:0 0 20px #20caff33}
+.rescueTile{position:relative;display:grid;place-items:center;aspect-ratio:1;border:2px solid #ffffff55;border-radius:11px;color:white;font-size:23px;font-weight:900;text-shadow:0 2px 2px #0008;box-shadow:inset 0 3px 6px #ffffff55,0 4px 8px #0009;touch-action:manipulation;cursor:pointer;transition:transform .13s,border-color .13s,box-shadow .13s}
+.rescueTile:disabled{opacity:.5;cursor:default}.rescueTile:not(:disabled):active{transform:scale(.91)}.rescueTile:not(:disabled):after{content:"";position:absolute;inset:-3px;border-radius:12px;border:1px solid #fff3;pointer-events:none}
+.rescueTile.rescueSuggested{border-color:#ffdc70;box-shadow:0 0 13px #ffce5788,inset 0 3px 6px #ffffff55;animation:rescuePulse 1.2s ease-in-out infinite}
+@keyframes rescuePulse{50%{box-shadow:0 0 21px #ffe589,inset 0 3px 6px #ffffff55}}
+#rescueHint{color:#65ecff;font-size:12px;font-weight:bold;margin:7px 0}.rescueFoot{color:#9cb1d5;font-size:11px;line-height:1.5;margin:7px 0 11px}.rescueFoot small{font-size:10px}
+#rescueSkip{background:#283149!important;border:1px solid #73829e!important;color:#c6d2e9!important;font-size:12px!important;padding:9px 15px!important}
+.rescueTransform{animation:rescueTransform .44s ease-out!important;z-index:2}
+@keyframes rescueTransform{0%{transform:scale(1);filter:brightness(1)}40%{transform:scale(1.32) rotate(9deg);filter:brightness(2.6) drop-shadow(0 0 18px #fff)}100%{transform:scale(1);filter:brightness(1)}}
+</style>
+<div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
 <script>
 // v84 clean game engine
 let soundOn=true, audioCtx=null;
@@ -768,40 +783,66 @@ async function lockAndScore(){
 // One free WILD rescue per game. Rewarded advertising can be connected later.
 function showWildRescue(){
  const grid=$("rescueGrid");grid.innerHTML="";
+ const candidates=[];
  board.forEach((d,i)=>{
-  const btn=document.createElement("button");
+  if(!d||d.wild)return;
+  const old=board[i];board[i]={wild:true,n:"★",c:"wild"};
+  const count=evaluate().length;board[i]=old;
+  candidates.push({i,count});
+ });
+ const max=Math.max(0,...candidates.map(x=>x.count));
+ board.forEach((d,i)=>{
+  const btn=document.createElement("button");btn.className="rescueTile";
   btn.textContent=d?(d.wild?"★":d.n):"·";
-  btn.style.background=d?(d.wild?"#8c3b9f":({red:"#a93b5d",blue:"#286fba",yellow:"#b58a0d",green:"#18884d"}[d.c]||"#394b76")):"#263149";
+  btn.style.background=d?(d.wild?"linear-gradient(140deg,#e4a7ff,#a13de5)":({red:"linear-gradient(140deg,#ff819f,#b52250)",blue:"linear-gradient(140deg,#8fe6ff,#2168d5)",yellow:"linear-gradient(140deg,#ffe98a,#e5a313)",green:"linear-gradient(140deg,#8fffc3,#159b4d)"}[d.c]||"#394b76")):"#263149";
   btn.disabled=!d||!!d.wild;
+  if(max>0&&candidates.some(x=>x.i===i&&x.count===max))btn.classList.add("rescueSuggested");
+  btn.setAttribute("aria-label",(i+1)+"番のダイスをWILDに変更");
   btn.onclick=()=>applyWildRescue(i);
   grid.appendChild(btn);
  });
+ $("rescueHint").textContent=max>0?"金色に光るマスは役が成立する候補です":"★ 置き換えるダイスをタップ ★";
  $("wildRescue").classList.add("show");
 }
 async function applyWildRescue(i){
- if(rescueUsed||!board[i]||board[i].wild)return;
- rescueUsed=true;
- board[i]={wild:true,n:"★",c:"wild"};
+ if(rescueUsed||busy||!board[i]||board[i].wild)return;
+ rescueUsed=true;busy=true;
  $("wildRescue").classList.remove("show");
- busy=true;render();
+ board[i]={wild:true,n:"★",c:"wild"};
+ render();
+ const cell=$("board").children[i];if(cell){cell.classList.add("rescueTransform");cell.scrollIntoView?.({block:"nearest"})}
+ try{sfxPlace()}catch(e){}
+ await new Promise(r=>setTimeout(r,450));
  const wins=evaluate();
  if(wins.length){
   combo++;
   const m=mult(),steps=[],clear=new Set();
-  wins.forEach(w=>w.hands.forEach(h=>{steps.push({name:w.name,idx:w.idx,hand:h[0],base:h[1]});w.idx.forEach(j=>clear.add(j))}));
+  wins.forEach(w=>w.hands.forEach(h=>steps.push({name:w.name,idx:w.idx,hand:h[0],base:h[1]})));
   const bonus=steps.length>=3?2:steps.length===2?1.5:1;
   const total=Math.round(steps.reduce((a,x)=>a+x.base,0)*m*bonus);
-  v84Fever(steps,combo,bonus,total,m);chainCelebration(combo,steps.length);
-  score+=total;if(score>best){best=score;set("rg4best",best)}
-  log("★ WILD RESCUE +"+total.toLocaleString());
-  render();
+  RGImpact.begin(combo,steps.length);
+  v84Fever(steps,combo,bonus,total,m);
+  chainCelebration(combo,steps.length);
+  let impactStep=0;
+  for(const step of steps){
+   document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
+   step.idx.forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("flash")});
+   RGImpact.hit(step.idx,combo,impactStep++);
+   await new Promise(r=>setTimeout(r,220));
+   const gain=Math.round(step.base*m*bonus);
+   showScorePop(gain,m*bonus);score+=gain;
+   if(score>best){best=score;set("rg4best",best)}
+   $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();
+   log("★ RESCUE +"+gain+" "+step.name+" / "+step.hand+" COMBO×"+m.toFixed(1));
+   step.idx.forEach(j=>clear.add(j));
+   document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
+   await new Promise(r=>setTimeout(r,60));
+  }
+  RGImpact.finish([...clear],combo,steps.length);
   [...clear].forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("clearing")});
-  await new Promise(r=>setTimeout(r,380));
+  await new Promise(r=>setTimeout(r,210));
   [...clear].forEach(j=>board[j]=null);
- }else{
-  combo=0;
-  log("★ WILD RESCUE：役は未成立");
- }
+ }else{combo=0;log("★ WILD RESCUE：役は未成立")}
  if(tray.every(d=>d===null))tray=newTray();
  busy=false;render();
  if(board.every(Boolean))gameOver();
