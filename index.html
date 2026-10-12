@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v84 — CLEAN APP UI</title>
+<title>ROLL GRID 4 v85 — WILD RESCUE</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -381,7 +381,8 @@ body.screenKick .app{animation:kick68 .22s linear}@keyframes kick68{25%{transfor
 </div>
 
 <div id="feverFx"><div id="feverBurst"></div><div id="feverWord"></div><div id="feverMath"></div></div>
-<div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
+<div id="wildRescue" class="overlay"><div class="result" style="max-width:390px"><h2 style="color:#ffce58">WILD RESCUE ★</h2><p style="font-size:13px;line-height:1.5">手詰まり！ 1ゲームに1回、盤面のダイスをWILDに変えて復活できます。<br><small>※広告は未接続・無料体験版</small></p><div id="rescueGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px auto;max-width:290px"></div><p id="rescueHint" style="font-size:12px;color:#aeefff">置き換えるダイスをタップ</p><button id="rescueSkip" style="margin-top:8px">救済せず終了</button></div></div>
+<style>#wildRescue #rescueGrid button{width:100%;aspect-ratio:1;border:2px solid #66799a;border-radius:10px;font-size:20px;font-weight:bold;color:#fff;cursor:pointer}#wildRescue #rescueGrid button:active{border-color:#ffce58;transform:scale(.95)}</style><div id="gameOver" class="overlay"><div class="result"><h2>GAME OVER</h2><div id="finalScore" class="resultScore">0</div><h3>MY SCORE TOP 10</h3><ol id="scoreList" class="scores"></ol><button id="again">もう一度</button></div></div>
 <script>
 // v84 clean game engine
 let soundOn=true, audioCtx=null;
@@ -478,11 +479,11 @@ function refillColorBag(){
 }
 function nextColor(){if(!colorBag.length)refillColorBag();return colorBag.pop()}
 function roll(){if(Math.random()<.03)return{wild:true,n:"★",c:"wild"};return{wild:false,n:1+Math.floor(Math.random()*4),c:nextColor()}}
-// 20% assist: select a die that can extend an existing 2+ dice near-hand.
+// 25% assist: select a die that can extend an existing 2+ dice near-hand.
 // WILD remains 3%, and the 4-of-each-color bag is preserved.
 function assistedRoll(){
  const d=roll();
- if(d.wild||Math.random()>=.20||typeof board==='undefined')return d;
+ if(d.wild||Math.random()>=.25||typeof board==='undefined')return d;
  const candidates=[];
  for(const [,ids] of patterns()){
    const filled=ids.map(i=>board[i]).filter(Boolean);
@@ -502,7 +503,7 @@ function assistedRoll(){
 function newTray(){return[assistedRoll(),assistedRoll(),assistedRoll(),assistedRoll()]}
 
 let board=new Array(16).fill(null),tray=newTray(),placedThisTurn=[],score=0,best=0,turn=0,combo=0,busy=false;
-let lockCount=0,rerollReady=false,rerollArmed=false;
+let rescueUsed=false,lockCount=0,rerollReady=false,rerollArmed=false;
 
 function get(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
 function set(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -755,13 +756,57 @@ async function lockAndScore(){
  // LOCK後の役判定・消去が終わった時点で16マス全部埋まっていたらGAME OVER。
  // 役が成立して消え、空きマスができた場合は続行。
  const empty=board.filter(x=>!x).length;
- if(empty===0){gameOver();return}
+ if(empty===0){busy=false;render();if(!rescueUsed){showWildRescue();return}gameOver();return}
 
  // 未使用ダイスは保持。4個すべて使い切った時だけ次の4個を補充。
  if(tray.every(d=>d===null)) tray=newTray();
 
  busy=false;render();
 }
+
+
+// One free WILD rescue per game. Rewarded advertising can be connected later.
+function showWildRescue(){
+ const grid=$("rescueGrid");grid.innerHTML="";
+ board.forEach((d,i)=>{
+  const btn=document.createElement("button");
+  btn.textContent=d?(d.wild?"★":d.n):"·";
+  btn.style.background=d?(d.wild?"#8c3b9f":({red:"#a93b5d",blue:"#286fba",yellow:"#b58a0d",green:"#18884d"}[d.c]||"#394b76")):"#263149";
+  btn.disabled=!d||!!d.wild;
+  btn.onclick=()=>applyWildRescue(i);
+  grid.appendChild(btn);
+ });
+ $("wildRescue").classList.add("show");
+}
+async function applyWildRescue(i){
+ if(rescueUsed||!board[i]||board[i].wild)return;
+ rescueUsed=true;
+ board[i]={wild:true,n:"★",c:"wild"};
+ $("wildRescue").classList.remove("show");
+ busy=true;render();
+ const wins=evaluate();
+ if(wins.length){
+  combo++;
+  const m=mult(),steps=[],clear=new Set();
+  wins.forEach(w=>w.hands.forEach(h=>{steps.push({name:w.name,idx:w.idx,hand:h[0],base:h[1]});w.idx.forEach(j=>clear.add(j))}));
+  const bonus=steps.length>=3?2:steps.length===2?1.5:1;
+  const total=Math.round(steps.reduce((a,x)=>a+x.base,0)*m*bonus);
+  v84Fever(steps,combo,bonus,total,m);chainCelebration(combo,steps.length);
+  score+=total;if(score>best){best=score;set("rg4best",best)}
+  log("★ WILD RESCUE +"+total.toLocaleString());
+  render();
+  [...clear].forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("clearing")});
+  await new Promise(r=>setTimeout(r,380));
+  [...clear].forEach(j=>board[j]=null);
+ }else{
+  combo=0;
+  log("★ WILD RESCUE：役は未成立");
+ }
+ if(tray.every(d=>d===null))tray=newTray();
+ busy=false;render();
+ if(board.every(Boolean))gameOver();
+}
+$("rescueSkip").onclick=()=>{$("wildRescue").classList.remove("show");gameOver()};
 
 function gameOver(){
  sfxGameOver();
@@ -771,7 +816,7 @@ function gameOver(){
 }
 function reset(){
  board=new Array(16).fill(null);colorBag=[];tray=newTray();placedThisTurn=[];score=0;turn=0;combo=0;busy=false;
- lockCount=0;rerollReady=false;rerollArmed=false;
+ rescueUsed=false;lockCount=0;rerollReady=false;rerollArmed=false;
  $("gameOver").classList.remove("show");$("log").innerHTML="";render()
 }
 $("lock").onclick=lockAndScore;$("reset").onclick=reset;$("again").onclick=reset;
