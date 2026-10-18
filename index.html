@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v114 — Longer Match Haptics</title>
+<title>ROLL GRID 4 v115 — Longer Match Haptics</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1641,9 +1641,10 @@ window.RGImpact=(()=>{
 </script>
 
 <script>
-/* v114 — longer native iPhone match celebration haptics. */
+/* v115 — combo-count matched haptic pulses at role detection. */
 (()=>{
   const haptics=()=>window.Capacitor?.Plugins?.Haptics;
+  let comboSequence=0;
   const fire=(kind)=>{
     try{
       const h=haptics();
@@ -1664,7 +1665,21 @@ window.RGImpact=(()=>{
   const impact=window.RGImpact;
   if(impact&&typeof impact.begin==="function"){
     const original=impact.begin;
-    impact.begin=function(...args){fire("combo");return original.apply(this,args)};
+    impact.begin=function(combo,...args){
+      const sequence=++comboSequence;
+      const count=Math.min(3,Math.max(1,Number(combo)||1));
+      const h=haptics();
+      if(h){
+        (async()=>{
+          for(let i=0;i<count;i++){
+            if(sequence!==comboSequence)return;
+            try{await h.vibrate({duration:320});}catch(_){return;}
+            if(i<count-1)await new Promise(resolve=>setTimeout(resolve,140));
+          }
+        })();
+      }
+      return original.call(this,combo,...args);
+    };
   }
 })();
 </script>
