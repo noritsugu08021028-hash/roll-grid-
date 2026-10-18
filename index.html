@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v112 — iPhone Haptics</title>
+<title>ROLL GRID 4 v113 — Longer Match Haptics</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1641,7 +1641,7 @@ window.RGImpact=(()=>{
 </script>
 
 <script>
-/* v112 — native iPhone haptics; browser remains fully playable. */
+/* v113 — longer native iPhone match celebration haptics. */
 (()=>{
   const haptics=()=>window.Capacitor?.Plugins?.Haptics;
   const fire=(kind)=>{
@@ -1651,7 +1651,7 @@ window.RGImpact=(()=>{
       let task;
       if(kind==="place")task=h.impact({style:"Light"});
       else if(kind==="lock")task=h.impact({style:"Medium"});
-      else if(kind==="combo")task=h.notification({type:"Success"});
+      else if(kind==="combo")task=h.vibrate({duration:320});
       else if(kind==="gameover")task=h.notification({type:"Warning"});
       if(task&&typeof task.catch==="function")task.catch(()=>{});
     }catch(_){}
