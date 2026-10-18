@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v113 — Longer Match Haptics</title>
+<title>ROLL GRID 4 v114 — Longer Match Haptics</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1641,7 +1641,7 @@ window.RGImpact=(()=>{
 </script>
 
 <script>
-/* v113 — longer native iPhone match celebration haptics. */
+/* v114 — longer native iPhone match celebration haptics. */
 (()=>{
   const haptics=()=>window.Capacitor?.Plugins?.Haptics;
   const fire=(kind)=>{
@@ -1662,9 +1662,9 @@ window.RGImpact=(()=>{
     window[name]=function(...args){fire(kind);return original.apply(this,args)};
   }
   const impact=window.RGImpact;
-  if(impact&&typeof impact.finish==="function"){
-    const original=impact.finish;
-    impact.finish=function(...args){fire("combo");return original.apply(this,args)};
+  if(impact&&typeof impact.begin==="function"){
+    const original=impact.begin;
+    impact.begin=function(...args){fire("combo");return original.apply(this,args)};
   }
 })();
 </script>
