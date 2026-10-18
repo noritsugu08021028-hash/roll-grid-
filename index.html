@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v111 — HUD LAYOUT FIX</title>
+<title>ROLL GRID 4 v112 — iPhone Haptics</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1637,6 +1637,35 @@ window.RGImpact=(()=>{
    }catch(e){status.textContent="登録できませんでした。通信状態を確認して再試行してください。";btn.disabled=false;}
  });
  new MutationObserver(()=>{if($("gameOver").classList.contains("show")){$("globalSubmitBtn").disabled=false;$("globalSubmitBtn").textContent="世界ランキングに登録";$("globalSubmitStatus").textContent="登録は任意です。ニックネームとスコアが公開されます。";}}).observe($("gameOver"),{attributes:true,attributeFilter:["class"]});
+})();
+</script>
+
+<script>
+/* v112 — native iPhone haptics; browser remains fully playable. */
+(()=>{
+  const haptics=()=>window.Capacitor?.Plugins?.Haptics;
+  const fire=(kind)=>{
+    try{
+      const h=haptics();
+      if(!h)return;
+      let task;
+      if(kind==="place")task=h.impact({style:"Light"});
+      else if(kind==="lock")task=h.impact({style:"Medium"});
+      else if(kind==="combo")task=h.notification({type:"Success"});
+      else if(kind==="gameover")task=h.notification({type:"Warning"});
+      if(task&&typeof task.catch==="function")task.catch(()=>{});
+    }catch(_){}
+  };
+  for(const [name,kind] of [["sfxPlace","place"],["sfxLock","lock"],["sfxGameOver","gameover"]]){
+    const original=window[name];
+    if(typeof original!=="function")continue;
+    window[name]=function(...args){fire(kind);return original.apply(this,args)};
+  }
+  const impact=window.RGImpact;
+  if(impact&&typeof impact.finish==="function"){
+    const original=impact.finish;
+    impact.finish=function(...args){fire("combo");return original.apply(this,args)};
+  }
 })();
 </script>
 </body></html>
