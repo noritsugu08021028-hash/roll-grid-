@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v124 — Board and Tray Spacing</title>
+<title>ROLL GRID 4 v125 — Measured Board Fit</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1754,6 +1754,35 @@ window.RGImpact=(()=>{
       return original.call(this,combo,roles,...args);
     };
   }
+})();
+</script>
+
+<script>
+/* v125 — measure real grid slot on iPhone instead of guessing viewport dimensions. */
+(()=>{
+ const fit=()=>{
+   if(window.innerWidth>500)return;
+   const board=document.querySelector('.boardFrame');
+   const deck=document.querySelector('.diceDeck');
+   const hud=document.querySelector('.hud');
+   if(!board||!deck||!hud)return;
+   const deckTop=deck.getBoundingClientRect().top;
+   const hudBottom=hud.getBoundingClientRect().bottom;
+   const styles=getComputedStyle(board);
+   const parentWidth=board.parentElement.getBoundingClientRect().width;
+   const maxHeight=Math.max(120,deckTop-hudBottom-22);
+   const size=Math.max(120,Math.floor(Math.min(parentWidth-18,maxHeight)));
+   board.style.setProperty('width',size+'px','important');
+   board.style.setProperty('height',size+'px','important');
+   board.style.setProperty('max-height',size+'px','important');
+   board.style.setProperty('min-height','0px','important');
+   board.style.setProperty('align-self','center','important');
+   board.style.setProperty('justify-self','center','important');
+ };
+ const schedule=()=>requestAnimationFrame(fit);
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',schedule,{once:true});else schedule();
+ window.addEventListener('resize',schedule);
+ window.addEventListener('orientationchange',()=>setTimeout(fit,150));
 })();
 </script>
 </body></html>
