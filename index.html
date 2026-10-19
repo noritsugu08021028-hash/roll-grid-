@@ -1606,14 +1606,25 @@ window.RGImpact=(()=>{
 /* v109 — optional public ranking integration. Existing local ranking remains intact. */
 (()=>{
  const API="https://2wzib0r02j.execute-api.ap-southeast-2.amazonaws.com/ranking";
+ const isNative=()=>!!(window.Capacitor?.isNativePlatform?.());
+ async function rankingRequest(method,payload){
+   if(isNative()){
+     const http=window.Capacitor?.Plugins?.CapacitorHttp;
+     if(!http?.request)throw Error("CapacitorHttp unavailable");
+     const result=await http.request({url:API,method,headers:payload?{"Content-Type":"application/json"}:{},data:payload,responseType:"json"});
+     if(result.status<200||result.status>=300)throw Error("HTTP "+result.status);
+     return result.data;
+   }
+   const res=await fetch(API,{method,cache:"no-store",...(payload?{headers:{"content-type":"application/json"},body:JSON.stringify(payload)}:{})});
+   if(!res.ok)throw Error("HTTP "+res.status);
+   return res.json();
+ }
  const $=id=>document.getElementById(id);
  const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  async function refreshGlobal(){
    const target=$("globalRankList");target.textContent="読み込み中…";
    try{
-     const res=await fetch(API,{method:"GET",cache:"no-store"});
-     if(!res.ok)throw Error("HTTP "+res.status);
-     const data=await res.json();
+     const data=await rankingRequest("GET");
      const rows=Array.isArray(data.ranking)?data.ranking:[];
      target.innerHTML=rows.length?rows.slice(0,20).map((r,i)=>
        '<div class="rankRow"><div class="rankNo">'+(i+1)+'</div><div class="rankScore">'+safe(r.nickname||"PLAYER")+'</div><div class="rankDate">'+Number(r.score||0).toLocaleString()+'</div></div>'
@@ -1630,8 +1641,7 @@ window.RGImpact=(()=>{
    if(!Number.isInteger(score)||score<0||score>10000000){status.textContent="スコアを確認できません。";return;}
    btn.disabled=true;status.textContent="登録中…";
    try{
-     const res=await fetch(API,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({nickname:name,score})});
-     if(!res.ok)throw Error("HTTP "+res.status);
+     await rankingRequest("POST",{nickname:name,score});
      status.textContent="登録できました！ MY RANKINGで順位を確認できます。";
      btn.textContent="登録済み";btn.disabled=true;
    }catch(e){status.textContent="登録できませんでした。通信状態を確認して再試行してください。";btn.disabled=false;}
