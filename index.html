@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v119 — Equal Score Cards</title>
+<title>ROLL GRID 4 v120 — Score & Best HUD</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -703,7 +703,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
   <section class="hud">
     <div class="stat">SCORE<b id="score">0</b></div>
     <div class="stat">BEST<b id="best">0</b></div>
-    <div class="stat">COMBO<b id="combo">×1.0</b></div>
+    <b id="combo" hidden aria-hidden="true">×1.0</b>
     <div class="stat placed">PLACED<b id="turn">0</b></div>
   </section>
   <div class="boardFrame"><div id="board" class="board"><div class="cell" data-i="0"></div><div class="cell" data-i="1"></div><div class="cell" data-i="2"></div><div class="cell" data-i="3"></div><div class="cell" data-i="4"></div><div class="cell" data-i="5"></div><div class="cell" data-i="6"></div><div class="cell" data-i="7"></div><div class="cell" data-i="8"></div><div class="cell" data-i="9"></div><div class="cell" data-i="10"></div><div class="cell" data-i="11"></div><div class="cell" data-i="12"></div><div class="cell" data-i="13"></div><div class="cell" data-i="14"></div><div class="cell" data-i="15"></div></div></div>
@@ -1613,6 +1613,12 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
  .app{grid-template-rows:40px 68px minmax(0,1fr) 96px 56px 54px!important}
  .boardFrame{width:min(100%,49dvh)!important}
 }
+
+/* v120 — two balanced HUD cards; combo value retained for game logic */
+.hud{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:8px!important}
+.hud>.stat:not(.placed){min-width:0!important;width:100%!important}
+.hud>.stat:first-child b,.hud>.stat:nth-child(2) b{font-size:clamp(23px,6.5vw,38px)!important;letter-spacing:-.035em!important}
+@media(max-width:500px){.hud{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
