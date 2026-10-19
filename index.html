@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v128 — Wild Rescue Effects</title>
+<title>ROLL GRID 4 v129 — Faster Scoring</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1184,16 +1184,16 @@ async function lockAndScore(){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    s.idx.forEach(j=>$("board").children[j].classList.add("flash"));
    RGImpact.hit(s.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,450));
+   await new Promise(r=>setTimeout(r,290));
    const gain=Math.round(s.base*m*simultaneousBonus);showScorePop(gain,m*simultaneousBonus);score+=gain;if(score>best){best=score;set("rg4best",best)}
    $("score").textContent=score.toLocaleString();$("best").textContent=best.toLocaleString();
    log("+"+gain+" "+s.name+" / "+s.hand+" COMBO×"+m.toFixed(1)+(simultaneousBonus>1?" MULTI×"+simultaneousBonus.toFixed(1):""));s.idx.forEach(j=>clear.add(j));
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
-   await new Promise(r=>setTimeout(r,60));
+   await new Promise(r=>setTimeout(r,35));
   }
   RGImpact.finish([...clear],combo,steps.length);
   [...clear].forEach(j=>$("board").children[j].classList.add("clearing"));
-  await new Promise(r=>setTimeout(r,210));
+  await new Promise(r=>setTimeout(r,165));
   [...clear].forEach(j=>board[j]=null);
  }else combo=0;
 
@@ -1264,7 +1264,7 @@ async function applyWildRescue(i){
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
    step.idx.forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("flash")});
    RGImpact.hit(step.idx,combo,impactStep++);
-   await new Promise(r=>setTimeout(r,450));
+   await new Promise(r=>setTimeout(r,290));
    const gain=Math.round(step.base*m*bonus);
    showScorePop(gain,m*bonus);score+=gain;
    if(score>best){best=score;set("rg4best",best)}
@@ -1272,11 +1272,11 @@ async function applyWildRescue(i){
    log("★ RESCUE +"+gain+" "+step.name+" / "+step.hand+" COMBO×"+m.toFixed(1));
    step.idx.forEach(j=>clear.add(j));
    document.querySelectorAll(".flash").forEach(x=>x.classList.remove("flash"));
-   await new Promise(r=>setTimeout(r,60));
+   await new Promise(r=>setTimeout(r,35));
   }
   RGImpact.finish([...clear],combo,steps.length);
   [...clear].forEach(j=>{const el=$("board").children[j];if(el)el.classList.add("clearing")});
-  await new Promise(r=>setTimeout(r,210));
+  await new Promise(r=>setTimeout(r,165));
   [...clear].forEach(j=>board[j]=null);
  }else{combo=0;log("★ WILD RESCUE：役は未成立")}
  if(tray.every(d=>d===null))tray=newTray();
@@ -1674,6 +1674,9 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
 @keyframes rescueRoleFlash{to{filter:brightness(2.1);transform:scale(1.035)}}
 #board .cell.clearing{animation:rescueClear .24s ease-in forwards!important}
 @keyframes rescueClear{to{opacity:0;transform:scale(.12);filter:brightness(2.4)}}
+
+/* v129 — larger touch target without shrinking the visible dice */
+@media(max-width:500px){#tray .nextslot{min-width:0!important;touch-action:none!important;position:relative!important}#tray .nextslot::after{content:"";position:absolute;inset:-5px -2px;pointer-events:none}#board .cell.justPlaced{touch-action:none!important}}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
