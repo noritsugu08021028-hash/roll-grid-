@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v120 — Score & Best HUD</title>
+<title>ROLL GRID 4 v121 — Restore Dice Tray</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1619,6 +1619,22 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
 .hud>.stat:not(.placed){min-width:0!important;width:100%!important}
 .hud>.stat:first-child b,.hud>.stat:nth-child(2) b{font-size:clamp(23px,6.5vw,38px)!important;letter-spacing:-.035em!important}
 @media(max-width:500px){.hud{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+
+/* v121 — keep the four playable dice visible within the deck */
+@media(max-width:500px){
+ .app{grid-template-rows:42px 70px minmax(0,1fr) 116px 56px 52px!important;row-gap:5px!important}
+ .diceDeck{height:116px!important;min-height:116px!important;overflow:visible!important;display:flex!important;flex-direction:column!important;justify-content:flex-start!important;padding:4px 7px!important}
+ .diceDeck .deckHead{height:20px!important;min-height:20px!important;flex:0 0 20px!important}
+ #tray.nextbox{height:76px!important;min-height:76px!important;flex:0 0 76px!important;overflow:visible!important;align-items:center!important}
+ #tray .nextslot{height:76px!important;min-height:0!important;display:grid!important;place-items:center!important}
+ #tray .nextslot .die{display:block!important;width:min(60px,15vw)!important;height:min(60px,15vw)!important;visibility:visible!important;opacity:1!important}
+ .boardFrame{width:min(100%,45dvh)!important;max-height:100%!important}
+}
+@media(max-width:500px) and (max-height:760px){
+ .app{grid-template-rows:40px 66px minmax(0,1fr) 110px 52px 48px!important;row-gap:4px!important}
+ .diceDeck{height:110px!important;min-height:110px!important}
+ .boardFrame{width:min(100%,43dvh)!important}
+}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
