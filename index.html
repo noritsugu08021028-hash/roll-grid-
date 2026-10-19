@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v130 — Ranking Timing</title>
+<title>ROLL GRID 4 v131 — Synced Combo Timing</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1691,7 +1691,7 @@ window.RGImpact=(()=>{
   s.osc(final?90:145,.10,'sine',.13);
   (final?[1,1.25,1.5,2]:[1,1.5]).forEach((m,i)=>s.osc(pitch*m,final?.24:.12,'triangle',.075,i*.035));
  }
- function vibrate(pattern){if(!reduced())try{navigator.vibrate&&navigator.vibrate(pattern)}catch(_){}}
+ function vibrate(pattern){if(window.Capacitor?.isNativePlatform?.())return;if(!reduced())try{navigator.vibrate&&navigator.vibrate(pattern)}catch(_){}}
  function add(el){document.body.appendChild(el);setTimeout(()=>el.remove(),550)}
  return {
   begin(combo,count){},
@@ -1784,24 +1784,15 @@ window.RGImpact=(()=>{
     if(typeof original!=="function")continue;
     window[name]=function(...args){fire(kind);return original.apply(this,args)};
   }
+  // One short native haptic exactly when each scoring role flashes.
+  // No independent vibration queue: visual and tactile effects share the same step clock.
   const impact=window.RGImpact;
-  if(impact&&typeof impact.begin==="function"){
-    const original=impact.begin;
-    impact.begin=function(combo,roles,...args){
-      const sequence=++comboSequence;
-      // JACKPOT is 3+ simultaneous scoring roles, not the combo streak.
-      const count=Math.min(4,Math.max(1,Number(roles)||1));
+  if(impact&&typeof impact.hit==="function"){
+    const originalHit=impact.hit;
+    impact.hit=function(indices,combo,step,...args){
       const h=haptics();
-      if(h){
-        (async()=>{
-          for(let i=0;i<count;i++){
-            if(sequence!==comboSequence)return;
-            try{await h.vibrate({duration:320});}catch(_){return;}
-            if(i<count-1)await new Promise(resolve=>setTimeout(resolve,140));
-          }
-        })();
-      }
-      return original.call(this,combo,roles,...args);
+      if(h){try{const task=h.vibrate({duration:105});task?.catch?.(()=>{});}catch(_){}}
+      return originalHit.call(this,indices,combo,step,...args);
     };
   }
 })();
