@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v129 — Faster Scoring</title>
+<title>ROLL GRID 4 v130 — Ranking Timing</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1746,12 +1746,17 @@ window.RGImpact=(()=>{
    const status=$("globalSubmitStatus"),btn=$("globalSubmitBtn");
    if(!name||name.length>16){status.textContent="ニックネームは1〜16文字で入力してください。";return;}
    if(!Number.isInteger(score)||score<0||score>10000000){status.textContent="スコアを確認できません。";return;}
-   btn.disabled=true;status.textContent="登録中…";
+   btn.disabled=true;status.textContent="登録中…（通信時間を計測しています）";
+   const started=performance.now();
    try{
      await rankingRequest("POST",{nickname:name,score});
-     status.textContent="登録できました！ MY RANKINGで順位を確認できます。";
+     const seconds=((performance.now()-started)/1000).toFixed(1);
+     status.textContent="登録できました！（通信 "+seconds+"秒） MY RANKINGで順位を確認できます。";
      btn.textContent="登録済み";btn.disabled=true;
-   }catch(e){status.textContent="登録できませんでした。通信状態を確認して再試行してください。";btn.disabled=false;}
+   }catch(e){
+     const seconds=((performance.now()-started)/1000).toFixed(1);
+     status.textContent="登録できませんでした（"+seconds+"秒）。通信状態を確認してください。";btn.disabled=false;
+   }
  });
  new MutationObserver(()=>{if($("gameOver").classList.contains("show")){$("globalSubmitBtn").disabled=false;$("globalSubmitBtn").textContent="世界ランキングに登録";$("globalSubmitStatus").textContent="登録は任意です。ニックネームとスコアが公開されます。";}}).observe($("gameOver"),{attributes:true,attributeFilter:["class"]});
 })();
