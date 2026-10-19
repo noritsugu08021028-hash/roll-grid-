@@ -1083,14 +1083,14 @@ function installBoardDrag(source,fromIndex){
  function begin(x,y){
   if(busy||active)return;active=true;
   const r=source.getBoundingClientRect();w=r.width;h=r.height;
-  ghost=source.cloneNode(true);ghost.classList.add("dragGhost");ghost.style.width=w+"px";ghost.style.height=h+"px";document.body.appendChild(ghost);
+  ghost=source.cloneNode(true);ghost.classList.add("dragGhost");ghost.style.width=w+"px";ghost.style.height=h+"px";ghost.style.pointerEvents="none";document.body.appendChild(ghost);
   source.style.visibility="hidden";source.classList.add("dragSourceHidden");point(x,y);
  }
  function finish(x,y){
   if(!active)return;active=false;
   if(ghost){ghost.remove();ghost=null}
   document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
-  const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest(".cell"):null;
+  const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest("#board .cell"):null;
   source.style.visibility="";source.classList.remove("dragSourceHidden");
   const d=board[fromIndex];
   if(!d)return;
@@ -1107,6 +1107,8 @@ function installBoardDrag(source,fromIndex){
     sfxPlace();render();return;
    }
   }
+  // v139: A committed/locked die is never a valid replacement target.
+  // A failed overlap must leave both dice exactly where they were.
   // v138: Never overwrite a tray die when dragging a placed die outside the board.
   // Only an explicit drop onto an empty tray slot returns the die; all other drops snap back.
   const traySlot=hit?.closest?.('#tray .nextslot');
