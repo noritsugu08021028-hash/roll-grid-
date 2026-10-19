@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v118 — iPhone Layout & Score Effects</title>
+<title>ROLL GRID 4 v119 — Equal Score Cards</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1599,6 +1599,19 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
 @media(max-width:500px) and (max-height:760px){
  .app{grid-template-rows:40px 74px minmax(0,1fr) 96px 56px 54px!important;row-gap:4px!important}
  .boardFrame{width:min(100%,45dvh)!important}
+}
+
+/* v119 — equal-size score cards, compact HUD, board uses available width */
+@media(max-width:500px){
+ .hud{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+ .hud .stat{width:auto!important;min-width:0!important;padding:4px 2px!important}
+ .hud .stat:first-child b,.hud .stat:nth-child(2) b,.hud .stat:nth-child(3) b{font-size:clamp(19px,5.6vw,29px)!important;letter-spacing:-.045em!important}
+ .app{grid-template-rows:44px 72px minmax(0,1fr) 106px 62px 58px!important}
+ .boardFrame{width:min(100%,52dvh)!important;height:auto!important;max-height:100%!important;aspect-ratio:1/1!important}
+}
+@media(max-width:500px) and (max-height:760px){
+ .app{grid-template-rows:40px 68px minmax(0,1fr) 96px 56px 54px!important}
+ .boardFrame{width:min(100%,49dvh)!important}
 }
 </style>
 <script>
