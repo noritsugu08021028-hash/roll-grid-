@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v115 — Longer Match Haptics</title>
+<title>ROLL GRID 4 v117 — Jackpot Haptics & Layout</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1570,6 +1570,22 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
 .rgRing{width:22px;height:22px;margin:-11px;border:2px solid var(--color);border-radius:50%;animation:rgRing .35s ease-out forwards}
 @keyframes rgRing{to{transform:scale(4);opacity:0}}
 @media(prefers-reduced-motion:reduce){.boardFrame.impactKick,.cell.impactHit .die{animation:none}.rgEffect{display:none}.board .cell.clearing{animation:none;opacity:0}}
+
+/* v117 — small iPhone typography and overflow safeguards */
+@media(max-width:430px){
+ .app{min-width:0}
+ .app > *, .hud > *, .stat{min-width:0}
+ .stat b{max-width:100%;font-variant-numeric:tabular-nums;letter-spacing:-.045em}
+ .rankingTop,.globalRanking,.rankingList,.rankRow{min-width:0;max-width:100%}
+ .rankRow{grid-template-columns:minmax(30px,42px) minmax(0,1fr) minmax(0,auto);column-gap:6px;padding:9px 8px}
+ .rankScore,.rankDate{min-width:0;overflow:hidden;text-overflow:ellipsis}
+ .globalRanking .rankRow{grid-template-columns:34px minmax(0,1fr) minmax(65px,auto)}
+ .globalRanking .rankScore{font-size:clamp(15px,4.6vw,23px)}
+ .globalRanking .rankDate{font-size:clamp(17px,5.3vw,28px)}
+ .rankingBack{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.2}
+ #feverWord{max-width:96vw;font-size:clamp(32px,10vw,64px);overflow-wrap:anywhere}
+ #feverMath{max-width:96vw;overflow-wrap:anywhere}
+}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
@@ -1675,9 +1691,10 @@ window.RGImpact=(()=>{
   const impact=window.RGImpact;
   if(impact&&typeof impact.begin==="function"){
     const original=impact.begin;
-    impact.begin=function(combo,...args){
+    impact.begin=function(combo,roles,...args){
       const sequence=++comboSequence;
-      const count=Math.min(3,Math.max(1,Number(combo)||1));
+      // JACKPOT is 3+ simultaneous scoring roles, not the combo streak.
+      const count=Math.min(4,Math.max(1,Number(roles)||1));
       const h=haptics();
       if(h){
         (async()=>{
@@ -1688,7 +1705,7 @@ window.RGImpact=(()=>{
           }
         })();
       }
-      return original.call(this,combo,...args);
+      return original.call(this,combo,roles,...args);
     };
   }
 })();
