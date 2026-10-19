@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v117 — Jackpot Haptics & Layout</title>
+<title>ROLL GRID 4 v118 — iPhone Layout & Score Effects</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -852,7 +852,7 @@ function legacy_sfxGameOver(){tone(330,.16,"triangle",.035);tone(247,.18,"triang
 
 function showScorePop(points,multi){
  const el=document.getElementById("scorePop");
- el.textContent="+"+points+(multi>1?"  ×"+multi.toFixed(1):"");
+ el.textContent="+"+Number(points).toLocaleString();
  el.classList.remove("show");void el.offsetWidth;el.classList.add("show");
 }
 
@@ -1138,7 +1138,7 @@ function v84Fever(steps,level,bonus,total,m){
  const burst=document.getElementById("feverBurst"),word=document.getElementById("feverWord"),math=document.getElementById("feverMath"),n=steps.length;
  word.textContent=n>=3?"JACKPOT!":n===2?"DOUBLE HIT!":level>=4?"AMAZING!":level===3?"EXCELLENT!":level===2?"GREAT!":"GOOD!";
  rgAnnounce(n>=3?"JACKPOT!!":n===2?"DOUBLE HIT!!":level>=5?"UNBELIEVABLE!!":level>=4?"AMAZING!!":level===3?"EXCELLENT!!":level===2?"GREAT!!":"GOOD!!");
- math.textContent=(n>1?n+" ROLES ×"+bonus.toFixed(1)+"  ·  ":"")+"COMBO ×"+m.toFixed(1)+"  ·  +"+total.toLocaleString();
+ math.textContent="+"+total.toLocaleString()+" POINTS";
  [burst,word,math].forEach(x=>{x.classList.remove("go");void x.offsetWidth;x.classList.add("go")});
 
  const se=document.getElementById("score");se.classList.remove("scorePunch");void se.offsetWidth;se.classList.add("scorePunch");
@@ -1585,6 +1585,20 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
  .rankingBack{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.2}
  #feverWord{max-width:96vw;font-size:clamp(32px,10vw,64px);overflow-wrap:anywhere}
  #feverMath{max-width:96vw;overflow-wrap:anywhere}
+}
+
+/* v118 — prioritize full-width iPhone playfield and readable controls */
+@media(max-width:500px){
+ .app{width:100%!important;max-width:none!important;padding-left:6px!important;padding-right:6px!important;grid-template-rows:44px clamp(74px,9.5dvh,94px) minmax(0,1fr) 106px 62px 58px!important;row-gap:5px!important}
+ .boardFrame{width:min(100%,47dvh)!important;max-width:100%!important;height:auto!important;aspect-ratio:1/1!important;max-height:100%!important;margin:auto!important}
+ .appNav{min-width:0!important}
+ .appNav button{min-width:0!important;font-size:clamp(9px,2.6vw,13px)!important;line-height:1.15!important;letter-spacing:0!important}
+ .actionRow button{min-width:0!important}
+ .diceDeck{min-width:0!important}
+}
+@media(max-width:500px) and (max-height:760px){
+ .app{grid-template-rows:40px 74px minmax(0,1fr) 96px 56px 54px!important;row-gap:4px!important}
+ .boardFrame{width:min(100%,45dvh)!important}
 }
 </style>
 <script>
