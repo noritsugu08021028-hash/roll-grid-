@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v127 — Clean Dice Drag</title>
+<title>ROLL GRID 4 v128 — Wild Rescue Effects</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1244,9 +1244,11 @@ async function applyWildRescue(i){
  $("wildRescue").classList.remove("show");
  board[i]={wild:true,n:"★",c:"wild"};
  render();
- const cell=$("board").children[i];if(cell){cell.classList.add("rescueTransform");cell.scrollIntoView?.({block:"nearest"})}
+ const cell=$("board").children[i];
+ if(cell){cell.classList.add("rescueTransform","rescueSpotlight");}
  try{sfxPlace()}catch(e){}
- await new Promise(r=>setTimeout(r,450));
+ await new Promise(r=>setTimeout(r,850));
+ if(cell)cell.classList.remove("rescueSpotlight");
  const wins=evaluate();
  if(wins.length){
   combo++;
@@ -1663,6 +1665,15 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
 #tray .nextslot .die.dragSourceHidden,
 #board .cell .die.dragSourceHidden{visibility:hidden!important;opacity:0!important}
 .dragGhost{visibility:visible!important;opacity:1!important;box-shadow:0 0 15px #ffe17a88!important}
+
+/* v128 — clearly visible WILD rescue transformation and role clear */
+#board .cell.rescueSpotlight{position:relative!important;z-index:5!important;border:3px solid #fff2a5!important;background:radial-gradient(circle,#b05aff88,#5b208855,#0a1330)!important;box-shadow:0 0 14px 5px #f4c5ff,0 0 28px 9px #ac54ff,inset 0 0 22px #fff5c2!important;animation:rescueSpotlightPulse .38s ease-in-out infinite alternate!important}
+#board .cell.rescueSpotlight .die{transform:scale(1.14)!important;filter:brightness(1.4) drop-shadow(0 0 10px #fff)!important}
+@keyframes rescueSpotlightPulse{from{filter:brightness(1)}to{filter:brightness(1.65)}}
+#board .cell.flash{border-color:#fff5a3!important;box-shadow:0 0 20px 5px #ffe65c,inset 0 0 24px #fff5a388!important;animation:rescueRoleFlash .3s ease-in-out infinite alternate!important}
+@keyframes rescueRoleFlash{to{filter:brightness(2.1);transform:scale(1.035)}}
+#board .cell.clearing{animation:rescueClear .24s ease-in forwards!important}
+@keyframes rescueClear{to{opacity:0;transform:scale(.12);filter:brightness(2.4)}}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
