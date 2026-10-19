@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v125 — Measured Board Fit</title>
+<title>ROLL GRID 4 v126 — Swap & Placement Glow</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -975,7 +975,7 @@ function render(){
   const c=document.createElement("div");c.className="cell";c.dataset.i=i;
   if(d){
    const el=dieEl(d);c.appendChild(el);
-   if(placedThisTurn.includes(i) && d.turnTray!==undefined) installBoardDrag(el,i);
+   if(placedThisTurn.includes(i) && d.turnTray!==undefined){c.classList.add("justPlaced");installBoardDrag(el,i);}
   }
   b.appendChild(c)
  });
@@ -1016,7 +1016,7 @@ function installDrag(source,trayIndex){
  // Capture the whole tray slot, including transparent space around the die.
  slot.style.position='relative';slot.style.cursor='grab';
  function cellAt(x,y){const el=document.elementFromPoint(x,y);return el?.closest?.('#board .cell')||null}
- function highlight(x,y){document.querySelectorAll('#board .cell.target').forEach(c=>c.classList.remove('target'));const c=cellAt(x,y);if(c&&!board[+c.dataset.i])c.classList.add('target')}
+ function highlight(x,y){document.querySelectorAll('#board .cell.target').forEach(c=>c.classList.remove('target'));const c=cellAt(x,y);if(c&&(!board[+c.dataset.i] || (placedThisTurn.includes(+c.dataset.i)&&board[+c.dataset.i]?.turnTray!==undefined)))c.classList.add('target')}
  function stop(){
    window.removeEventListener('blur',stop);
    document.removeEventListener('pointermove',onMove,true);
@@ -1033,9 +1033,17 @@ function installDrag(source,trayIndex){
  }
  function onUp(e){if(!active||e.pointerId!==pointer)return;e.preventDefault();
    const c=cellAt(e.clientX,e.clientY-42),i=c?+c.dataset.i:-1;
-   stop();if(i>=0&&!board[i]&&tray[trayIndex]){
-     const d=tray[trayIndex];board[i]={...d,turnTray:trayIndex};tray[trayIndex]=null;
-     placedThisTurn.push(i);turn++;sfxPlace();render();
+   stop();if(i>=0&&tray[trayIndex]){
+     const d=tray[trayIndex];
+     if(!board[i]){
+       board[i]={...d,turnTray:trayIndex};tray[trayIndex]=null;
+       placedThisTurn.push(i);turn++;sfxPlace();render();
+     }else if(placedThisTurn.includes(i)&&board[i].turnTray!==undefined){
+       const previous=board[i];
+       board[i]={...d,turnTray:trayIndex};
+       tray[trayIndex]={wild:previous.wild,n:previous.n,c:previous.c};
+       sfxPlace();render();
+     }
    }
  }
  function onCancel(e){if(e.pointerId===pointer)stop()}
@@ -1060,7 +1068,7 @@ function installBoardDrag(source,fromIndex){
   ghost.style.left=(x-w/2)+"px";ghost.style.top=(y-h/2)+"px";
   document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
   const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest(".cell"):null;
-  if(cell && (Number(cell.dataset.i)===fromIndex || !board[Number(cell.dataset.i)])) cell.classList.add("target");
+  if(cell && (Number(cell.dataset.i)===fromIndex || !board[Number(cell.dataset.i)] || (placedThisTurn.includes(Number(cell.dataset.i)) && board[Number(cell.dataset.i)]?.turnTray!==undefined))) cell.classList.add("target");
  }
  function begin(x,y){
   if(busy||active)return;active=true;
@@ -1078,9 +1086,14 @@ function installBoardDrag(source,fromIndex){
   if(!d)return;
   if(cell){
    const to=Number(cell.dataset.i);
+   if(to===fromIndex){render();return;}
    if(to!==fromIndex && !board[to]){
     board[to]=d;board[fromIndex]=null;
     placedThisTurn=placedThisTurn.map(v=>v===fromIndex?to:v);
+    sfxPlace();render();return;
+   }
+   if(to!==fromIndex && board[to] && placedThisTurn.includes(to) && board[to].turnTray!==undefined){
+    const other=board[to];board[to]=d;board[fromIndex]=other;
     sfxPlace();render();return;
    }
   }
@@ -1632,6 +1645,19 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
  .app{row-gap:7px!important}
  .boardFrame{width:min(calc(100% - 10px),calc(100dvh - 365px))!important;max-height:calc(100% - 12px)!important}
 }
+
+/* v126 — recent placements glow; reroll control stays clear of dice */
+#board .cell.justPlaced{border-color:#ffdf78!important;box-shadow:inset 0 0 13px #ffd45755,0 0 12px #ffe07188!important;background:linear-gradient(145deg,#3d3017,#07182a)!important}
+#board .cell.justPlaced .die{filter:brightness(1.12) drop-shadow(0 0 5px #ffd56a)!important}
+#board .cell.target{outline:3px solid #ffe881!important;outline-offset:-3px!important;box-shadow:inset 0 0 20px #ffe96666,0 0 15px #ffdc6b!important}
+@media(max-width:500px){
+ .diceDeck .deckHead{height:25px!important;min-height:25px!important;flex:0 0 25px!important}
+ #reroll{top:1px!important;right:2px!important;height:20px!important;padding:0 5px!important;font-size:8px!important;z-index:4!important}
+ #tray.nextbox{height:61px!important;min-height:61px!important;flex:0 0 61px!important;margin-top:3px!important}
+ #tray .nextslot{height:61px!important}
+ #tray .nextslot .die{width:min(55px,14vw)!important;height:min(55px,14vw)!important}
+}
+@media(max-width:500px) and (max-height:760px){#tray.nextbox{height:56px!important;min-height:56px!important;flex-basis:56px!important}#tray .nextslot{height:56px!important}}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
