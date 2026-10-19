@@ -1107,12 +1107,17 @@ function installBoardDrag(source,fromIndex){
     sfxPlace();render();return;
    }
   }
-  // Dropping outside the board returns this die to its original tray slot.
-  board[fromIndex]=null;
-  tray[d.turnTray]={wild:d.wild,n:d.n,c:d.c};
-  placedThisTurn=placedThisTurn.filter(v=>v!==fromIndex);
-  turn=Math.max(0,turn-1);
-  sfxPlace();
+  // v138: Never overwrite a tray die when dragging a placed die outside the board.
+  // Only an explicit drop onto an empty tray slot returns the die; all other drops snap back.
+  const traySlot=hit?.closest?.('#tray .nextslot');
+  const trayIndex=traySlot?Array.from(document.querySelectorAll('#tray .nextslot')).indexOf(traySlot):-1;
+  if(trayIndex>=0 && trayIndex<tray.length && !tray[trayIndex]){
+    board[fromIndex]=null;
+    tray[trayIndex]={wild:d.wild,n:d.n,c:d.c};
+    placedThisTurn=placedThisTurn.filter(v=>v!==fromIndex);
+    turn=Math.max(0,turn-1);
+    sfxPlace();
+  }
   render();
  }
  source.ontouchstart=e=>{if(e.touches.length!==1)return;e.preventDefault();const t=e.touches[0];begin(t.clientX,t.clientY)};
