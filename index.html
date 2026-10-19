@@ -2,7 +2,7 @@
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#02050d">
-<title>ROLL GRID 4 v126 — Swap & Placement Glow</title>
+<title>ROLL GRID 4 v127 — Clean Dice Drag</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#21dcff;--blue:#3978ff;--pink:#ff39e7;--gold:#ffbf2f;--ink:#020916}
@@ -1022,7 +1022,7 @@ function installDrag(source,trayIndex){
    document.removeEventListener('pointermove',onMove,true);
    document.removeEventListener('pointerup',onUp,true);
    document.removeEventListener('pointercancel',onCancel,true);
-   if(ghost)ghost.remove();ghost=null;source.style.visibility='';
+   if(ghost)ghost.remove();ghost=null;source.style.visibility='';source.classList.remove('dragSourceHidden');
    document.querySelectorAll('#board .cell.target').forEach(c=>c.classList.remove('target'));
    active=false;pointer=null;
  }
@@ -1052,7 +1052,7 @@ function installDrag(source,trayIndex){
    e.preventDefault();active=true;pointer=e.pointerId;startedAt=Date.now();
    ghost=source.cloneNode(true);ghost.classList.add('dragGhost');
    const r=source.getBoundingClientRect();ghost.style.width=r.width+'px';ghost.style.height=r.height+'px';
-   ghost.style.pointerEvents='none';document.body.appendChild(ghost);source.style.visibility='hidden';
+   ghost.style.pointerEvents='none';document.body.appendChild(ghost);source.style.visibility='hidden';source.classList.add('dragSourceHidden');
    window.addEventListener('blur',stop,{once:true});
    document.addEventListener('pointermove',onMove,{capture:true,passive:false});
    document.addEventListener('pointerup',onUp,{capture:true,passive:false});
@@ -1074,14 +1074,14 @@ function installBoardDrag(source,fromIndex){
   if(busy||active)return;active=true;
   const r=source.getBoundingClientRect();w=r.width;h=r.height;
   ghost=source.cloneNode(true);ghost.classList.add("dragGhost");ghost.style.width=w+"px";ghost.style.height=h+"px";document.body.appendChild(ghost);
-  source.style.visibility="hidden";point(x,y);
+  source.style.visibility="hidden";source.classList.add("dragSourceHidden");point(x,y);
  }
  function finish(x,y){
   if(!active)return;active=false;
   if(ghost){ghost.remove();ghost=null}
   document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
   const hit=document.elementFromPoint(x,y),cell=hit&&hit.closest?hit.closest(".cell"):null;
-  source.style.visibility="";
+  source.style.visibility="";source.classList.remove("dragSourceHidden");
   const d=board[fromIndex];
   if(!d)return;
   if(cell){
@@ -1108,7 +1108,7 @@ function installBoardDrag(source,fromIndex){
  source.ontouchstart=e=>{if(e.touches.length!==1)return;e.preventDefault();const t=e.touches[0];begin(t.clientX,t.clientY)};
  source.ontouchmove=e=>{if(!active)return;e.preventDefault();const t=e.touches[0];point(t.clientX,t.clientY)};
  source.ontouchend=e=>{if(!active)return;e.preventDefault();const t=e.changedTouches[0];finish(t.clientX,t.clientY)};
- source.ontouchcancel=()=>{if(active){active=false;if(ghost)ghost.remove();source.style.visibility="";render()}};
+ source.ontouchcancel=()=>{if(active){active=false;if(ghost)ghost.remove();source.style.visibility="";source.classList.remove("dragSourceHidden");render()}};
  source.onmousedown=e=>{e.preventDefault();begin(e.clientX,e.clientY);document.onmousemove=m=>point(m.clientX,m.clientY);document.onmouseup=m=>{document.onmousemove=null;document.onmouseup=null;finish(m.clientX,m.clientY)}};
 }
 
@@ -1658,6 +1658,11 @@ tray.addEventListener("pointerdown",function(e){const d=e.target.closest(".die")
  #tray .nextslot .die{width:min(55px,14vw)!important;height:min(55px,14vw)!important}
 }
 @media(max-width:500px) and (max-height:760px){#tray.nextbox{height:56px!important;min-height:56px!important;flex-basis:56px!important}#tray .nextslot{height:56px!important}}
+
+/* v127 — hide the original die while the floating drag preview moves */
+#tray .nextslot .die.dragSourceHidden,
+#board .cell .die.dragSourceHidden{visibility:hidden!important;opacity:0!important}
+.dragGhost{visibility:visible!important;opacity:1!important;box-shadow:0 0 15px #ffe17a88!important}
 </style>
 <script>
 /* v75: effects triggered directly by each scored role and the final clear. */
