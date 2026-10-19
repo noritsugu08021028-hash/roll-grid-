@@ -697,10 +697,7 @@ body::after{inset:7px!important;opacity:1!important;border:2px solid rgba(241,18
 <div id="titleScreen" class="titleScreen" role="dialog" aria-label="ROLL GRID 4 タイトル画面" aria-modal="true">
   <div class="titleGlow"></div>
   <div class="titleContent">
-    <div class="titleEyebrow">NEON DICE PUZZLE</div>
-    <div class="titleDice" aria-hidden="true"><span class="red">4</span><span class="blue">★</span><span class="yellow">2</span><span class="green">3</span></div>
-    <h1>ROLL<span>◇</span>GRID<small>4</small></h1>
-    <p class="titleCatch">ROLL. MATCH. SCORE.<br><strong>CHAIN THE COMBOS!</strong></p>
+    <div class="titleHero"><img src="ROLL_GRID_4_iPhone_AppIcon_1024_v2.png" alt="ROLL GRID 4" class="titleHeroImage" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="titleFallback" style="display:none">ROLL ◇ GRID <b>4</b></div></div>
     <div class="titleActions">
       <button id="titleStart" class="titleStart" type="button">▶ START GAME</button>
       <button id="titleRules" type="button">🎮 HOW TO PLAY</button>
@@ -1861,6 +1858,14 @@ window.RGImpact=(()=>{
 .titleActions button:active{transform:scale(.98)}
 .titleFoot{font-size:9px;letter-spacing:.1em;color:#7f9cbd;margin-top:29px}.titleFoot span{color:#e5bb57;padding:0 5px}
 @media(max-height:650px){.titleEyebrow{margin-bottom:10px}.titleDice{margin-bottom:10px}.titleDice span{width:44px;height:44px;font-size:23px}.titleCatch{margin:10px 0 16px}.titleActions{gap:8px}.titleActions button{min-height:44px}.titleActions .titleStart{min-height:54px}.titleFoot{margin-top:15px}}
+.titleScreen{align-items:stretch!important;overflow:hidden!important;padding:max(12px,env(safe-area-inset-top)) 18px max(18px,env(safe-area-inset-bottom))!important}
+.titleContent{display:flex!important;flex-direction:column!important;justify-content:space-between!important;gap:12px!important;min-height:0!important;height:100%!important;max-width:430px!important}
+.titleHero{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 0}
+.titleHeroImage{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:22px;box-shadow:0 0 30px #21caff22,0 0 55px #ffd14e18}
+.titleFallback{font-size:38px;font-weight:1000;color:#ffd45c;text-shadow:0 0 18px #e6b947}.titleFallback b{color:#ff4c6e}
+.titleActions{flex:0 0 auto!important;gap:10px!important;width:100%;max-width:330px!important}
+.titleFoot{flex:0 0 auto;margin-top:3px!important}
+@media(max-height:650px){.titleActions button{min-height:43px!important}.titleActions .titleStart{min-height:53px!important}.titleFoot{font-size:8px}}
 </style>
 <script>
 /* Title buttons reuse existing, tested rules and ranking overlays. */
